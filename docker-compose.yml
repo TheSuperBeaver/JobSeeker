@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  python-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app/backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MYSQL_HOST=mysql-db
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=jobspy
+      - MYSQL_USER=jobspy
+      - MYSQL_PASSWORD=jobspy
+    depends_on:
+      - mysql-db
+
+  node-frontend:
+    image: node:18
+    working_dir: /app/frontend
+    volumes:
+      - ./frontend:/app/frontend
+    ports:
+      - "3000:3000"
+    command: ["npm", "start"]
+    environment:
+      - MYSQL_HOST=mysql-db
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=jobspy
+      - MYSQL_USER=jobspy
+      - MYSQL_PASSWORD=jobspy
+    depends_on:
+      - mysql-db
+
+  mysql-db:
+    image: mysql:8
+    container_name: mysql-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: jobspy
+      MYSQL_USER: jobspy
+      MYSQL_PASSWORD: jobspy
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

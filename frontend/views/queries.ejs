@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manage Job Queries</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/bootstrap-icons/bootstrap-icons.css" />
+    <link href="styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <%- include('menu') -%>
+    <div class="container mt-5">
+      <h1>Job Queries</h1>
+
+      <!-- Table displaying Job Queries -->
+      <table class="table table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Search Term</th>
+            <th scope="col">Town</th>
+            <th scope="col">Country</th>
+            <th scope="col">Platforms</th>
+            <th scope="col">Status</th>
+            <th scope="col">Filters</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="queries-list">
+          <% queries.forEach((query) => { %>
+          <tr>
+            <td><%= query.search_term %></td>
+            <td><%= query.town %></td>
+            <td><%= query.country %></td>
+            <td class="icon-container">
+              <% if (query.query_google) { %>
+              <i class="bi bi-google"></i>
+              <% } %> <% if (query.query_indeed) { %>
+              <i class="bi bi-info-lg"></i>
+              <% } %> <% if (query.query_linkedin) { %>
+              <i class="bi bi-linkedin"></i>
+              <% } %>
+            </td>
+            <td><%= query.status %></td>
+            <td>
+              <% if (query.filters && query.filters.length > 0) { %> <%=
+              query.filters.map(filter => filter.filter).join(", ") %> <% } else
+              { %> No filters <% } %>
+            </td>
+            <td>
+              <button
+                class="btn btn-primary btn-sm modify-button"
+                data-id="<%= query.id %>"
+                data-search-term="<%= query.search_term %>"
+                data-town="<%= query.town %>"
+                data-country="<%= query.country %>"
+                data-status="<%= query.status %>"
+              >
+                Modify
+              </button>
+              <button
+                class="btn btn-danger btn-sm delete-button"
+                data-id="<%= query.id %>"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+      <button
+        class="btn btn-primary mb-3"
+        data-bs-toggle="modal"
+        data-bs-target="#addQueryModal"
+      >
+        + Add Query
+      </button>
+    </div>
+
+    <!-- Modal for adding a new query -->
+    <div
+      class="modal fade"
+      id="addQueryModal"
+      tabindex="-1"
+      aria-labelledby="addQueryModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header indeed">
+            <h3 class="modal-title" id="addQueryModalLabel">Add New Query</h3>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form id="query-form">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="search_term" class="form-label">Search Term</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="search_term"
+                  name="search_term"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="town" class="form-label">Town</label>
+                <input type="text" class="form-control" id="town" name="town" />
+              </div>
+              <div class="mb-3">
+                <label for="country" class="form-label">Country</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="country"
+                  name="country"
+                  value="BE"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Platforms</label>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="query_google"
+                    name="query_google"
+                    value="true"
+                  />
+                  <label class="form-check-label" for="query_google"
+                    >Google</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="query_indeed"
+                    name="query_indeed"
+                    value="true"
+                  />
+                  <label class="form-check-label" for="query_indeed"
+                    >Indeed</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="query_linkedin"
+                    name="query_linkedin"
+                    value="true"
+                  />
+                  <label class="form-check-label" for="query_linkedin"
+                    >LinkedIn</label
+                  >
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" name="status">
+                  <option value="automatic">Automatic</option>
+                  <option value="manual">Manual</option>
+                  <option value="deactivated">Deactivated</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="filters" class="form-label">Filters</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="filters"
+                  name="filters"
+                  placeholder="Comma-separated filters"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary">Save Query</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Modify Query Modal -->
+    <div
+      class="modal fade"
+      id="modifyQueryModal"
+      tabindex="-1"
+      aria-labelledby="modifyQueryModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <form id="modify-form">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modifyQueryModalLabel">
+                Modify Query
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="modify-id" name="id" />
+              <div class="mb-3">
+                <label for="modify-search-term" class="form-label"
+                  >Search Term</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modify-search-term"
+                  name="search_term"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="modify-town" class="form-label">Town</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modify-town"
+                  name="town"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="modify-country" class="form-label">Country</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modify-country"
+                  name="country"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="modify-status" class="form-label">Status</label>
+                <select class="form-select" id="modify-status" name="status">
+                  <option value="automatic">Automatic</option>
+                  <option value="manual">Manual</option>
+                  <option value="deactivated">Deactivated</option>
+                </select>
+              </div>
+              <!-- Checkboxes -->
+              <div class="mb-3">
+                <label class="form-label">Query Sources</label>
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="modify-google"
+                    name="query_google"
+                  />
+                  <label class="form-check-label" for="modify-google"
+                    >Google</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="modify-indeed"
+                    name="query_indeed"
+                  />
+                  <label class="form-check-label" for="modify-indeed"
+                    >Indeed</label
+                  >
+                </div>
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="modify-linkedin"
+                    name="query_linkedin"
+                  />
+                  <label class="form-check-label" for="modify-linkedin"
+                    >LinkedIn</label
+                  >
+                </div>
+              </div>
+
+              <!-- Filters -->
+              <div class="mb-3">
+                <label class="form-label">Filters</label>
+                <ul id="filters-list" class="list-group">
+                  <!-- Filters will be dynamically added here -->
+                </ul>
+                <div class="d-flex mt-2">
+                  <input
+                    type="text"
+                    id="new-filter-name"
+                    class="form-control me-2"
+                    placeholder="New Filter Name"
+                  />
+                  <button
+                    type="button"
+                    id="add-filter-button"
+                    class="btn btn-success btn-sm"
+                  >
+                    Add Filter
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const form = document.getElementById("query-form");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
+        const formData = new FormData(form); // Collect form data
+        const jsonData = Object.fromEntries(formData.entries()); // Convert to JSON
+
+        // Convert checkboxes to boolean
+        jsonData.query_google = formData.has("query_google");
+        jsonData.query_indeed = formData.has("query_indeed");
+        jsonData.query_linkedin = formData.has("query_linkedin");
+
+        try {
+          // POST the data to the backend
+          const response = await fetch("/queries", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(jsonData),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to save query");
+          }
+
+          // Fetch and reload the queries
+          const queriesResponse = await fetch("/queries", { method: "GET" });
+          if (queriesResponse.ok) {
+            const queriesHTML = await queriesResponse.text();
+            document.body.innerHTML = queriesHTML; // Replace the page content
+          } else {
+            console.error("Failed to reload queries");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const deleteButtons = document.querySelectorAll(".delete-button");
+
+        deleteButtons.forEach((button) => {
+          button.addEventListener("click", async (event) => {
+            const queryId = button.getAttribute("data-id");
+
+            if (confirm("Are you sure you want to delete this query?")) {
+              try {
+                // Send DELETE request
+                const response = await fetch(`/queries/${queryId}`, {
+                  method: "DELETE",
+                });
+
+                if (!response.ok) {
+                  throw new Error("Failed to delete query");
+                }
+
+                // Remove the deleted query's row from the table
+                const row = button.closest("tr");
+                row.remove();
+                const queriesResponse = await fetch("/queries", {
+                  method: "GET",
+                });
+                if (queriesResponse.ok) {
+                  const queriesHTML = await queriesResponse.text();
+                  document.body.innerHTML = queriesHTML; // Replace the page content
+                } else {
+                  console.error("Failed to reload queries");
+                }
+              } catch (error) {
+                console.error("Error deleting query:", error);
+                alert("Failed to delete query. Please try again.");
+              }
+            }
+          });
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const modifyButtons = document.querySelectorAll(".modify-button");
+        const modifyModal = new bootstrap.Modal(
+          document.getElementById("modifyQueryModal")
+        );
+        const modifyForm = document.getElementById("modify-form");
+
+        modifyButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            // Populate modal with query data
+            document.getElementById("modify-id").value =
+              button.getAttribute("data-id");
+            document.getElementById("modify-search-term").value =
+              button.getAttribute("data-search-term");
+            document.getElementById("modify-town").value =
+              button.getAttribute("data-town");
+            document.getElementById("modify-country").value =
+              button.getAttribute("data-country");
+            document.getElementById("modify-status").value =
+              button.getAttribute("data-status");
+
+            // Show modal
+            modifyModal.show();
+          });
+        });
+
+        // Handle form submission
+        modifyForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const id = document.getElementById("modify-id").value;
+          const search_term =
+            document.getElementById("modify-search-term").value;
+          const town = document.getElementById("modify-town").value;
+          const country = document.getElementById("modify-country").value;
+          const status = document.getElementById("modify-status").value;
+
+          try {
+            // Send PUT request
+            const response = await fetch(`/queries/${id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ search_term, town, country, status }),
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to modify query");
+            }
+
+            // Optionally reload the page to reflect changes
+            location.reload();
+          } catch (error) {
+            console.error("Error modifying query:", error);
+            alert("Failed to modify query. Please try again.");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

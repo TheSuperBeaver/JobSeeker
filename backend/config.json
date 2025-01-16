@@ -1,0 +1,9 @@
+{
+  "db_config": {
+    "host": "localhost",
+    "port": 3306,
+    "database": "jobspy",
+    "user": "jobspy",
+    "password": "jobspy"
+  }
+}

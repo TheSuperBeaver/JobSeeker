@@ -1,0 +1,21 @@
+{
+  "name": "job-posts-app",
+  "version": "1.0.0",
+  "description": "Server-side rendered job-posting app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "bootstrap-icons": "^1.11.3",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "marked": "^15.0.6",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.37.5"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

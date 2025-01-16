@@ -1,0 +1,167 @@
+:root {
+  --primary-color: #FFD616;
+  --secondary-color: #93c942;
+  --ternary-color: #2ab06d;
+  --fourth-color: #008f83;
+  --fifth-color: #006b7b;
+  --sixth-color: #2f4858;
+  --background-color: #FFFBEA;
+  --text-color: #333333;
+  --hover-color: #FFC107;
+}
+
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Filters Section */
+.filters {
+    margin-bottom: 20px;
+}
+
+.filters button {
+    margin-right: 10px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Card Styling */
+.card {
+    margin-bottom: 15px;
+    padding: 0;
+    transition: width 0.3s ease-in-out, transform 0.3s;
+    margin: 5px;
+}
+
+.card:hover {
+    box-shadow: 8px 8px 8px grey;  
+}
+
+/* Card Title */
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Card Body */
+.card-body {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-body .card-text {
+    position: relative;
+    z-index: 2;
+}
+
+.card-text.collapsed {
+    max-height: 3rem;
+    overflow: hidden;
+}
+
+/* Top Buttons on Card */
+.card .top-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+}
+
+/* Employment Type Background Colors */
+.fulltime {
+    background-color: #e0ffe0;
+}
+
+.parttime {
+    background-color: #e0f7ff;
+}
+
+.internship {
+    background-color: #f0e0ff;
+}
+
+.contract {
+    background-color: #fff0e0;
+}
+
+.navbar-inverse {
+  background-color: #ffd616;
+  border-color: #ffd616;
+}
+.navbar-fixed-top {
+  top: 0;
+  border-width: 0 0 1px;
+}
+.navbar {
+  z-index: 5;
+}
+
+.navbar .nav-link {
+  color: var(--text-color);
+}
+
+.navbar .nav-link:hover {
+  color: var(--hover-color);
+}
+
+.navbar-brand {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.nav-item {
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.indeed {
+    background-color: var(--secondary-color);
+}
+
+.google {
+    background-color: var(--ternary-color);
+}
+
+.linkedin {
+    background-color: var(--fourth-color);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
+}
+
+.icon-container {
+  display: flex; /* Arrange icons in a row */
+  justify-content: center; /* Center icons horizontally */
+  gap: 20px; /* Add space between icons */
+  padding: 10px; /* Add padding around the container */
+}
+
+.icon-container i {
+  font-size: 24px; /* Adjust icon size */
+  cursor: pointer; /* Optional: Add a pointer cursor on hover */
+}
+
+.icon-container i:hover {
+  color: #007bff; /* Optional: Change color on hover */
+}
