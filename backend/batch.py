@@ -63,7 +63,7 @@ if __name__ == "__main__":
         scheduler.start()
         print("Scheduler started. Waiting for tasks...")
         while True:
-            time.sleep(1)
+            time.sleep(60)
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
         print("Scheduler stopped.")

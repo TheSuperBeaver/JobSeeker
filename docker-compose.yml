@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   python-backend:
     build:
@@ -24,15 +22,14 @@ services:
       - ./frontend:/app/frontend
     ports:
       - "3000:3000"
-    command: ["npm", "start"]
+    command: >
+      sh -c "npm install && npm start"
     environment:
       - MYSQL_HOST=mysql-db
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=jobspy
       - MYSQL_USER=jobspy
       - MYSQL_PASSWORD=jobspy
-    depends_on:
-      - mysql-db
 
   mysql-db:
     image: mysql:8
