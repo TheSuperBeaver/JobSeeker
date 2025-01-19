@@ -2,29 +2,15 @@ const express = require("express");
 const router = express.Router();
 const JobPost = require("../models/JobPost");
 const marked = require("marked");
-var moment = require("moment");
 
-router.get("/", async (req, res) => {
-  const status = req.query.status || "all";
+router.get("/:status?", async (req, res) => {
+  const status = req.params.status || "all";
   const whereCondition = status !== "all" ? { status } : {};
   const order =
     status === "starred" ? [["status", "DESC"]] : [["date_posted", "DESC"]];
 
   try {
     const jobs = await JobPost.findAll({ where: whereCondition, order });
-    const processedJobs = jobs.map((job) => {
-      const fullDescription = marked.parse(job.description || "");
-      const shortDescription = marked.parse(
-        (job.description || "").substring(0, 300) + "..."
-      );
-      return {
-        ...job,
-        fullDescription,
-        shortDescription,
-        style: job.site.toLowerCase(),
-      };
-    });
-
     const allJobsCount = await JobPost.count();
     const newJobsCount = await JobPost.count({ where: [{ status: "new" }] });
     const viewedJobsCount = await JobPost.count({
@@ -37,14 +23,13 @@ router.get("/", async (req, res) => {
       where: [{ status: "hidden" }],
     });
 
-    res.render("index", {
-      jobs: processedJobs,
+    res.json({
+      jobs: jobs,
       allJobsCount,
       newJobsCount,
       viewedJobsCount,
       starredJobsCount,
       hiddenJobsCount,
-      moment: moment,
     });
   } catch (error) {
     console.error(error);

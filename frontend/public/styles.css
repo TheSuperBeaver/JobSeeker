@@ -41,13 +41,11 @@ body {
     box-shadow: 8px 8px 8px grey;  
 }
 
-/* Card Title */
 .card-title {
     font-size: 18px;
     font-weight: bold;
 }
 
-/* Card Body */
 .card-body {
     position: relative;
     overflow: hidden;
@@ -63,7 +61,6 @@ body {
     overflow: hidden;
 }
 
-/* Top Buttons on Card */
 .card .top-buttons {
     position: absolute;
     top: 10px;
@@ -71,7 +68,6 @@ body {
     z-index: 2;
 }
 
-/* Employment Type Background Colors */
 .fulltime {
     background-color: #e0ffe0;
 }

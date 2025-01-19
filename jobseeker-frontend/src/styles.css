@@ -1,0 +1,38 @@
+:root {
+  --primary-color: #FFD616;
+  --secondary-color: #93c942;
+  --ternary-color: #2ab06d;
+  --fourth-color: #008f83;
+  --fifth-color: #006b7b;
+  --sixth-color: #2f4858;
+  --background-color: #FFFBEA;
+  --text-color: #333333;
+  --hover-color: #FFC107;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.indeed {
+    background-color: var(--secondary-color);
+}
+
+.google {
+    background-color: var(--ternary-color);
+}
+
+.linkedin {
+    background-color: var(--fourth-color);
+}
+
+.icon-container i:hover {
+  color: #007bff; /* Optional: Change color on hover */
+}
+
+@font-face {
+  font-family: 'megrim';
+  src: url('assets/fonts/megrim-regular.ttf');
+}

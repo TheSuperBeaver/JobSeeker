@@ -1,0 +1,64 @@
+<div class="container mt-3">
+  <div class="d-flex flex-wrap gap-4">
+    <button
+      class="btn btn-primary me-2 position-relative"
+      routerLink="/jobs/all"
+      routerLinkActive="active"
+    >
+      All
+      <span
+        class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle p-2"
+      >
+        {{ allJobsCount }}
+      </span>
+    </button>
+    <button
+      class="btn btn-info me-2 position-relative"
+      routerLink="/jobs/new"
+      routerLinkActive="active"
+    >
+      New
+      <span
+        class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle p-2"
+      >
+        {{ newJobsCount }}
+      </span>
+    </button>
+    <button
+      class="btn btn-secondary me-2 position-relative"
+      routerLink="/jobs/viewed"
+      routerLinkActive="active"
+    >
+      Viewed
+      <span
+        class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle p-2"
+      >
+        {{ viewedJobsCount }}
+      </span>
+    </button>
+    <button
+      class="btn btn-success position-relative"
+      routerLink="/jobs/starred"
+      routerLinkActive="active"
+    >
+      Starred
+      <span
+        class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle p-2"
+      >
+        {{ starredJobsCount }}
+      </span>
+    </button>
+    <button
+      class="btn btn-danger me-2 position-relative"
+      routerLink="/jobs/hidden"
+      routerLinkActive="active"
+    >
+      Hidden
+      <span
+        class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle p-2"
+      >
+        {{ hiddenJobsCount }}
+      </span>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+.card {
+    margin-bottom: 15px;
+    padding: 0;
+    transition: width 0.3s ease-in-out, transform 0.3s;
+    margin: 5px;
+}
+
+.card:hover {
+    box-shadow: 8px 8px 8px grey;  
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-body {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-body .card-text {
+    position: relative;
+    z-index: 2;
+}
+
+.card-text.collapsed {
+    max-height: 3rem;
+    overflow: hidden;
+}
+
+.card .top-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+}
+
+.fulltime {
+    background-color: #e0ffe0;
+}
+
+.parttime {
+    background-color: #e0f7ff;
+}
+
+.internship {
+    background-color: #f0e0ff;
+}
+
+.contract {
+    background-color: #fff0e0;
+}
+
+.description-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* Limit to 5 lines */
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.description.expanded {
+  -webkit-line-clamp: unset; /* Show full description when expanded */
+  line-clamp: unset;
+  white-space: normal;
+}

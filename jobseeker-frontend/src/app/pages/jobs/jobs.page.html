@@ -1,0 +1,6 @@
+<div *ngIf="jobStatus" class="mt-3">
+  <p>
+    Current Status: <strong>{{ jobStatus }}</strong>
+  </p>
+</div>
+<app-joblist jobStatus="{{ jobStatus }}"></app-joblist>

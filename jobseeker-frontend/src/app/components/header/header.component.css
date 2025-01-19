@@ -1,0 +1,31 @@
+.navbar-inverse {
+  background-color: #ffd616;
+  border-color: #ffd616;
+}
+.navbar-fixed-top {
+  top: 0;
+  border-width: 0 0 1px;
+}
+.navbar {
+  z-index: 5;
+}
+
+.navbar .nav-link {
+  color: var(--text-color);
+}
+
+.navbar .nav-link:hover {
+  color: var(--hover-color);
+}
+
+.navbar-brand {
+    font-size: 38px;
+    font-weight: bolder;
+    color: black;
+    font-family: megrim;
+}
+
+.nav-item {
+    font-size: 24px;
+    font-weight: 400;
+}

@@ -1,0 +1,21 @@
+<job-filter
+  [allJobsCount]="allJobsCount"
+  [newJobsCount]="newJobsCount"
+  [viewedJobsCount]="viewedJobsCount"
+  [starredJobsCount]="starredJobsCount"
+  [hiddenJobsCount]="hiddenJobsCount"
+></job-filter>
+<div id="job-container" class="row" *ngIf="jobPosts.length > 0">
+  <div
+    class="col-md-4 mb-4"
+    *ngFor="let job of jobPosts"
+    [id]="'col-' + job.id"
+  >
+    <jobcard [job]="job"></jobcard>
+  </div>
+</div>
+
+<!-- Optionally, show a loading indicator if jobs are being loaded -->
+<div *ngIf="jobPosts.length === 0">
+  <img src="loading.gif" alt="Loading..." />
+</div>
