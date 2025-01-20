@@ -20,7 +20,7 @@ export class JobcardComponent {
   }
 
 
-  updateJobStatus(id: string, status: JobStatus) {
+  updateJobStatus(status: JobStatus) {
 
   }
 }

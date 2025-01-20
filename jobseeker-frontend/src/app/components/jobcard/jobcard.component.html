@@ -1,10 +1,13 @@
 <div *ngIf="job" class="card position-relative" [id]="'card-' + job.id">
-  <div class="card-header" [class]="job.site?.toLowerCase() + ' fs-4 position-relative'">
+  <div
+    class="card-header"
+    [class]="job.site?.toLowerCase() + ' fs-4 position-relative'"
+  >
     <!-- Starred Button -->
     <button
       *ngIf="job.status !== JobStatus.Starred"
       class="btn btn-warning btn-sm position-absolute top-0 start-0 m-2"
-      (click)="updateJobStatus(job.id?.toString() || '', JobStatus.Starred)"
+      (click)="updateJobStatus(JobStatus.Starred)"
     >
       ★
     </button>
@@ -13,7 +16,7 @@
     <button
       *ngIf="job.status !== JobStatus.Hidden"
       class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2"
-      (click)="updateJobStatus(job.id?.toString() || '', JobStatus.Hidden)"
+      (click)="updateJobStatus(JobStatus.Hidden)"
     >
       X
     </button>
@@ -45,7 +48,7 @@
       <markdown [data]="job.description"> </markdown>
     </div>
     <button
-      (click)="handleReadMoreToggle(job.id)"
+      (click)="handleReadMoreToggle()"
       *ngIf="job.description?.length ?? 0 > 0"
     >
       {{ expandedJobId === job.id ? "Read Less" : "Read More" }}
