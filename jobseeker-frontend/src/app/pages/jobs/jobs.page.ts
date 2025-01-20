@@ -10,13 +10,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './jobs.page.css'
 })
 export class JobsComponent {
-  jobStatus: string | null = null;
+  jobStatus: string | undefined = undefined;
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.jobStatus = params.get('jobStatus');
+      this.jobStatus = params.get('status')?? undefined;
     });
   }
 }

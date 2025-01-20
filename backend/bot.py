@@ -1,5 +1,5 @@
 from jobspy import scrape_jobs
-from db_utils import insert_jobs_into_db
+from db.db_utils import insert_jobs_into_db
 
 jobs = scrape_jobs(
     site_name=["indeed"],

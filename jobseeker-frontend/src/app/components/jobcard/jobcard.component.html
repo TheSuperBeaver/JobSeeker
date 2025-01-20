@@ -1,5 +1,5 @@
 <div *ngIf="job" class="card position-relative" [id]="'card-' + job.id">
-  <div class="card-header" [class]="job.style + ' fs-4 position-relative'">
+  <div class="card-header" [class]="job.site?.toLowerCase() + ' fs-4 position-relative'">
     <!-- Starred Button -->
     <button
       *ngIf="job.status !== JobStatus.Starred"
@@ -57,7 +57,7 @@
       [href]="job.job_url"
       target="_blank"
       class="icon-link"
-      style="color: black"
+      style="color: white"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

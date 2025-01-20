@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from jobspy import scrape_jobs
-from db_utils import (
+from db.db_utils import (
     get_all_automatic_jobqueries,
     insert_jobs_into_db,
     get_country_by_code,

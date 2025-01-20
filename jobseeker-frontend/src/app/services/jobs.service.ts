@@ -16,7 +16,7 @@ export class JobsService {
   loadJobs(jobStatus: string | null = null): Promise<any> {
     return new Promise((resolve, reject) => {
       const statusParam = jobStatus && jobStatus.trim() ? jobStatus : 'all';
-      const url = `http://localhost:3000/jobs/${statusParam}`;
+      const url = `http://localhost:5000/jobs/${statusParam}`;
 
       this.httpClient.get<JobResponse | null>(url).subscribe(
         (response: JobResponse | null) => {

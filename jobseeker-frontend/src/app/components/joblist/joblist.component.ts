@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { JobsService } from '../../services/jobs.service';
 import { JobPost } from '../../models/job.posts';
 import { CommonModule } from '@angular/common';
@@ -31,9 +31,17 @@ export class JoblistComponent {
     this.loadJobs();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['jobStatus']) {
+      console.log("jobStatus changed to: ", this.jobStatus);
+      this.loadJobs();
+    }
+  }
+
   async loadJobs(): Promise<void> {
     this.jobPosts = [];
     try {
+      console.log("loading job, job status = " + this.jobStatus);
       await this.jobsService.loadJobs(this.jobStatus);
       this.jobPosts = this.jobsService.jobs;
       this.allJobsCount = this.jobsService.allJobsCount;

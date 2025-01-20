@@ -1,9 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-// Define JobQueryFilters model
-const JobQueryFilters = require("./JobQueryFilters");
-
 const JobQueries = sequelize.define("JobQueries", {
   id: {
     type: DataTypes.INTEGER,
@@ -58,16 +55,10 @@ const JobQueries = sequelize.define("JobQueries", {
     type: DataTypes.ENUM("automatic", "manual", "deactivated"),
     defaultValue: "manual",
   },
-});
-
-// Association with JobQueryFilters
-JobQueries.hasMany(JobQueryFilters, {
-  foreignKey: "job_query_id",
-  as: "filters",
-});
-JobQueryFilters.belongsTo(JobQueries, {
-  foreignKey: "job_query_id",
-  as: "jobQuery",
+  filters: {
+    type: DataTypes.STRING,
+    defaultValue: ""
+  }
 });
 
 module.exports = JobQueries;
