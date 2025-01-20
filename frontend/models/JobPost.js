@@ -9,15 +9,12 @@ const JobPost = sequelize.define(
     title: { type: DataTypes.STRING, allowNull: false },
     company: { type: DataTypes.STRING, allowNull: false },
     company_url: DataTypes.STRING,
-    job_url: DataTypes.STRING,
+    job_url: DataTypes.STRING(1000),
     location_country: DataTypes.STRING,
     location_city: DataTypes.STRING,
     location_state: DataTypes.STRING,
     description: DataTypes.TEXT,
-    job_type: {
-      type: DataTypes.ENUM("fulltime", "parttime", "internship", "contract"),
-      allowNull: false,
-    },
+    job_type: DataTypes.STRING,
     job_function_interval: DataTypes.ENUM(
       "yearly",
       "monthly",

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 const JobQueries = require("../models/JobQueries");
 const JobQueryFilters = require("../models/JobQueryFilters");
 
@@ -50,6 +51,78 @@ router.post("/", async (req, res) => {
     res.status(201).json(newQuery);
   } catch (err) {
     res.status(500).json({ error: "Failed to create query" });
+  }
+});
+
+router.post("/manualquery/:id", async (req, res) => {
+  try {
+    console.log("Trying to manual query")
+    const queryId = req.params.id;
+    const jobQuery = await JobQueries.findByPk(queryId);
+    if (jobQuery == null) {
+      console.log("jobQuery not found")
+      return res.status(404).json({message : "jobQuery not found"})
+    }
+    console.log("Loaded jobQuery, now querying sites")
+
+    if (jobQuery.query_indeed) {
+      console.log("Query indeed")
+      const data = {
+        site_name: "indeed", 
+        search_term: jobQuery.search_term,
+        location: jobQuery.location || "Bruxelles, BE",
+        filter_by_title: jobQuery.filter_by_title || [],
+        results_wanted: jobQuery.results_wanted || 25,
+        hours_old: jobQuery.hours_old || 24,
+        country: jobQuery.country || "Belgium"
+      };
+      const pythonEndpoint = "http://127.0.0.1:5000/scrape_jobs"; 
+      axios.post(pythonEndpoint, data)
+        .catch(error => {
+          console.error("Error sending request:", error);
+        });
+    }
+
+    if (jobQuery.query_linkedin) {
+      const data = {
+        site_name: "linkedin", 
+        search_term: jobQuery.search_term,
+        location: jobQuery.location || "Bruxelles, BE",
+        filter_by_title: jobQuery.filter_by_title || [],
+        results_wanted: jobQuery.results_wanted || 25,
+        hours_old: jobQuery.hours_old || 24,
+        country: jobQuery.country || "Belgium"
+      };
+      const pythonEndpoint = "http://127.0.0.1:5000/scrape_jobs";
+      axios.post(pythonEndpoint, data)
+        .catch(error => {
+          console.error("Error sending request:", error);
+        });
+    }
+
+    if (jobQuery.query_google) {
+      const data = {
+        site_name: "google", 
+        search_term: jobQuery.search_term,
+        location: jobQuery.location || "Bruxelles, BE",
+        filter_by_title: jobQuery.filter_by_title || [],
+        results_wanted: jobQuery.results_wanted || 25,
+        hours_old: jobQuery.hours_old || 24,
+        country: jobQuery.country || "Belgium"
+      };
+      const pythonEndpoint = "http://127.0.0.1:5000/scrape_jobs";
+      axios.post(pythonEndpoint, data)
+        .catch(error => {
+          console.error("Error sending request:", error);
+        });
+    }
+
+
+    return res.status(200);
+        
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ error : "Failed to execute jobQuery" + err})
   }
 });
 

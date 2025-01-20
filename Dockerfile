@@ -21,7 +21,7 @@ RUN adduser \
     --shell "/sbin/nologin" \
     --no-create-home \
     --uid "${UID}" \
-    appuser
+    jobseekeruser
 
 # Install dependencies.
 RUN apt-get update && apt-get install -y supervisor && \
@@ -32,17 +32,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=backend/requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
-RUN chmod -R 775 /app/backend
-
-# Switch to the non-privileged user.
-USER appuser
-
 # Copy the entire backend folder into the container.
 COPY backend /app/backend
 COPY supervisord.conf /etc/supervisord.conf
+
+# Permissions to files and folders
+RUN chown -R jobseekeruser:jobseekeruser /app/backend
+RUN chmod -R 775 /app/backend
+RUN chmod +x /app/backend/batch.py
+RUN chmod +x /app/backend/app.py
+
+# Switch to the non-privileged user.
+USER jobseekeruser
 
 # Expose the port your app will run on (adjust if necessary).
 EXPOSE 5000
 
 # Command to run the app.py script.
-CMD ["supervisord", "-c", "/etc/supervisord.conf", "-n"]
+# CMD ["supervisord", "-c", "/etc/supervisord.conf", "-n"]
+CMD ["python", "/app/backend/app.py"]

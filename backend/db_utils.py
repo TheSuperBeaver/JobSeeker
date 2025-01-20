@@ -4,7 +4,7 @@ from mysql.connector import Error
 from jobspy import Country
 
 
-def load_config(config_file="backend/config.json"):
+def load_config(config_file="config.json"):
     with open(config_file, "r") as file:
         return json.load(file)
 
@@ -81,16 +81,22 @@ def insert_jobs_into_db(jobs):
         rowcount = 0
 
         for job in jobs:
+            if(isinstance(job, str)):
+                print(job + " is of type str, shouldn't happen")
+                continue
+            
             cursor.execute(check_query, (job.id,))
             exists = cursor.fetchone()[0] > 0
 
             if exists:
                 print(f"Job with site_id '{job.id}' already exists. Skipping...")
-                continue
+                return
 
             country = job.location.country
             if isinstance(job.location.country, Country):
                 country = job.location.country.name
+
+            jobType = " - ".join(str(jt.name) for jt in job.job_type) if job.job_type else None
 
             data = (
                 job.id,
@@ -102,9 +108,9 @@ def insert_jobs_into_db(jobs):
                 country,
                 job.location.city,
                 job.location.state,
-                job.description,
-                " - ".join(str(jt) for jt in job.job_type) if job.job_type else None,
-                job.job_function if job.job_function else None,
+                job.description.encode('utf-8'),
+                jobType,
+                None,
                 None,
                 None,
                 None,

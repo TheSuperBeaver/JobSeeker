@@ -54,6 +54,12 @@
             </td>
             <td>
               <button
+                class="btn btn-secondary btn-sm run-button"
+                data-id="<%= query.id %>"
+              >
+                Run
+              </button>
+              <button
                 class="btn btn-primary btn-sm modify-button"
                 data-id="<%= query.id %>"
                 data-search-term="<%= query.search_term %>"
@@ -414,6 +420,31 @@
                 alert("Failed to delete query. Please try again.");
               }
             }
+          });
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const deleteButtons = document.querySelectorAll(".run-button");
+
+        deleteButtons.forEach((button) => {
+          button.addEventListener("click", async (event) => {
+            const queryId = button.getAttribute("data-id");
+
+            
+              try {
+                const response = await fetch(`/queries/manualquery/${queryId}`, {
+                  method: "POST",
+                });
+
+                if (!response.ok) {
+                  throw new Error("Failed to run query");
+                }
+
+              } catch (error) {
+                console.error("Error running query:", error);
+              }
+            
           });
         });
       });
