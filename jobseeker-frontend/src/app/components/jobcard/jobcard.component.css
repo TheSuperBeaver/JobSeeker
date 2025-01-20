@@ -52,6 +52,18 @@
     background-color: #fff0e0;
 }
 
+.indeed {
+    background-color: var(--secondary-color);
+}
+
+.google {
+    background-color: var(--ternary-color);
+}
+
+.linkedin {
+    background-color: var(--fourth-color);
+}
+
 .description-container {
   position: relative;
   overflow: hidden;
