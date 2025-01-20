@@ -32,6 +32,21 @@ export class JobsService {
     });
   }
 
+  updateJobStatus(id: number, status: string): Promise<any> {
+    const url = `http://localhost:5000/jobs/${id}/status`;
+    return new Promise((resolve, reject) => {
+      this.httpClient.post(url, { status }).subscribe(
+        (response) => {
+          resolve(response);
+        },
+        (error) => {
+          console.error('Error updating job status:', error);
+          reject(false);
+        }
+      );
+    });
+  }
+
   get jobs(): JobPost[] {
     return this.jobResponse?.jobs ?? [];
   }

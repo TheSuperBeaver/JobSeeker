@@ -1,8 +1,5 @@
 <div *ngIf="job" class="card position-relative" [id]="'card-' + job.id">
-  <div
-    class="card-header"
-    [class]="job.site?.toLowerCase() + ' fs-4 position-relative'"
-  >
+  <div class="card-header bg-gradient" [class]="job.site?.toLowerCase() + ' fs-4 position-relative'">
     <!-- Starred Button -->
     <button
       *ngIf="job.status !== JobStatus.Starred"
