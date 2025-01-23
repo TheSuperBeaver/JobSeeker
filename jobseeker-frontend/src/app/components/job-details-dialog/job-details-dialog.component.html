@@ -1,0 +1,34 @@
+<div class="modal-container">
+  <h2 mat-dialog-title class="dialog-header">
+    {{ job.title }}
+    <i class="fa-solid fa-at"></i>
+    {{ job.company }}
+  </h2>
+  <mat-dialog-content class="dialog-content mat-typography">
+    <div class="info-row">
+      <strong>Description:</strong>
+      <markdown>{{ job.description }}</markdown>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-footer">
+    <button
+      mat-button
+      mat-dialog-close
+      class="hide-button"
+      (click)="updateJobStatus(JobStatus.Hidden)"
+    >
+      <i class="fa-solid fa-eye-slash"></i> Hide
+    </button>
+    <button
+      mat-button
+      mat-dialog-close
+      class="preferred-button"
+      (click)="updateJobStatus(JobStatus.Starred)"
+    >
+      <i class="fa-solid fa-star"></i> Preferred
+    </button>
+    <button mat-button mat-dialog-close class="close-button">
+      <i class="fa-solid fa-circle-xmark"></i> Close
+    </button>
+  </mat-dialog-actions>
+</div>

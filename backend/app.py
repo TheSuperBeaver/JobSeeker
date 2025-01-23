@@ -105,6 +105,7 @@ def get_job(id):
 # Update job status
 @app.route("/jobs/<int:id>/status", methods=["POST"])
 def update_job_status(id):
+    print(request.json)
     status = request.json.get("status")
     if not status:
         return jsonify({"error": "Status is required."}), 400

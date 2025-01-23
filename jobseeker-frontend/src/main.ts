@@ -4,11 +4,13 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app/app.routes';
 import { provideMarkdown } from 'ngx-markdown';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    provideMarkdown()
+    provideMarkdown(),
+    provideAnimations(),
   ],
 }).catch((err) => console.error(err));

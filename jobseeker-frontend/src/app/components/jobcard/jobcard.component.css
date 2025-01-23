@@ -1,86 +1,150 @@
-.card {
-    margin-bottom: 15px;
-    padding: 0;
-    transition: width 0.3s ease-in-out, transform 0.3s;
-    margin: 5px;
+:root {
+  --primary-color: #007bff;
+  --light-gray: #f5f5f5;
+  --dark-gray: #555;
 }
 
-.card:hover {
-    box-shadow: 8px 8px 8px grey;  
+.rounded {
+  border-radius: 12px;
 }
 
-.card-title {
-    font-size: 18px;
-    font-weight: bold;
+.cursor-pointer {
+  cursor: pointer;
 }
 
-.card-body {
-    position: relative;
-    overflow: hidden;
+.atseparator {
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #008f83;
+  text-shadow: grey;
+  font-weight: bold;
+
 }
 
-.card-body .card-text {
-    position: relative;
-    z-index: 2;
+.job-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.card-text.collapsed {
-    max-height: 3rem;
-    overflow: hidden;
+.job-card:hover {
+  transform: scale(1.02);
+  box-shadow: 8px 8px 16px rgba(255, 214, 22, 0.20);
 }
 
-.card .top-buttons {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 2;
+.mat-card-header {
+  border-radius: 12px 12px 0 0;
+  background-color: var(--light-gray);
+  padding: 16px;
 }
 
-.fulltime {
-    background-color: #e0ffe0;
+.dialog-header {
+  background: linear-gradient(180deg, #ffd616, #ffa500);
+  padding: 16px;
+  font-size: 1.5rem;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
-.parttime {
-    background-color: #e0f7ff;
+.job-title-header {
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: black;
+  text-transform: capitalize;
 }
 
-.internship {
-    background-color: #f0e0ff;
-}
-
-.contract {
-    background-color: #fff0e0;
-}
-
-.indeed {
-    background-color: var(--secondary-color);
-}
-
-.google {
-    background-color: var(--ternary-color);
-}
-
-.linkedin {
-    background-color: var(--fourth-color);
+.mat-card-content {
+  padding: 16px;
 }
 
 .description-container {
   position: relative;
   overflow: hidden;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .description {
   display: -webkit-box;
-  -webkit-line-clamp: 5; /* Limit to 5 lines */
+  -webkit-line-clamp: 5;
   line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--dark-gray);
+  cursor: pointer;
 }
 
-.description.expanded {
-  -webkit-line-clamp: unset; /* Show full description when expanded */
-  line-clamp: unset;
-  white-space: normal;
+.description-container button {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  border-top: 1px solid #ddd;
+  background: linear-gradient(-180deg, #ffd616, #ffa500);
+  background-color: #f9f9f9;
+  border-radius: 0 0 8px 8px;
+  font-size: 16x;
+  font-weight: 700;
+  color:black;
+}
+
+.footer-left {
+  color: black;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.company-logo {
+  max-width: 50px;
+  margin-right: 10px;
+}
+
+.badge i {
+  font-size: 14px;
+}
+
+.badge-new {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge-hidden {
+  background-color: #6c757d;
+  color: white;
+}
+
+.badge-viewed {
+  background-color: #17a586;
+  color: white;
+}
+
+.badge-starred {
+  background-color: #d09e14;
+  color: black;
+}
+
+.job-site-link {
+  color: black;
 }

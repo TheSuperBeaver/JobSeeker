@@ -1,6 +1,6 @@
 export enum JobStatus {
-  New,
-  Viewed,
-  Hidden,
-  Starred
+  New = 'new',
+  Hidden = 'hidden',
+  Viewed = 'viewed',
+  Starred = 'starred'
 }

@@ -28,11 +28,13 @@ body {
     background-color: var(--fourth-color);
 }
 
-.icon-container i:hover {
-  color: #007bff; /* Optional: Change color on hover */
-}
-
 @font-face {
   font-family: 'megrim';
   src: url('assets/fonts/megrim-regular.ttf');
+}
+.custom-dialog-container .mat-dialog-container {
+  padding: 0;
+  overflow: hidden;
+  animation: none;
+  backdrop-filter: blur(5px);
 }

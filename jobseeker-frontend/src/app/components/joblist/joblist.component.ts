@@ -16,6 +16,7 @@ export class JoblistComponent {
 
   @Input() jobStatus: string | undefined;
   jobPosts: JobPost[] = [];
+  selectedJob: JobPost | null = null;
 
   JobStatus = JobStatus;
   allJobsCount: number = 0;

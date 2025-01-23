@@ -4,8 +4,9 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
+
 class JobPost(db.Model):
-    __tablename__ = 'jobposts'
+    __tablename__ = "jobposts"
 
     id = db.Column(db.Integer, primary_key=True)
     site_id = db.Column(db.String, nullable=False)
@@ -20,8 +21,9 @@ class JobPost(db.Model):
     location_state = db.Column(db.String)
     description = db.Column(db.Text)
     job_type = db.Column(db.String)
-    job_function_interval = db.Column(db.String, 
-                                      default=None)  # Can use Enum in SQLAlchemy if needed
+    job_function_interval = db.Column(
+        db.String, default=None
+    )  # Can use Enum in SQLAlchemy if needed
     job_function_min_amount = db.Column(db.Numeric(10, 2))
     job_function_max_amount = db.Column(db.Numeric(10, 2))
     job_function_currency = db.Column(db.String)
@@ -39,7 +41,9 @@ class JobPost(db.Model):
     company_logo = db.Column(db.String)
     status = db.Column(db.String, default="new")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -63,7 +67,7 @@ class JobPost(db.Model):
             "job_function_max_amount": str(self.job_function_max_amount),
             "job_function_currency": self.job_function_currency,
             "job_function_salary_source": self.job_function_salary_source,
-            "date_posted": self.date_posted,
+            "date_posted": self.date_posted.isoformat() if self.date_posted else None,
             "emails": self.emails,
             "is_remote": self.is_remote,
             "job_level": self.job_level,
@@ -79,8 +83,9 @@ class JobPost(db.Model):
             "updated_at": self.updated_at,
         }
 
+
 class JobQueries(db.Model):
-    __tablename__ = 'jobqueries'
+    __tablename__ = "jobqueries"
 
     id = db.Column(db.Integer, primary_key=True)
     search_term = db.Column(db.String(100), nullable=False)

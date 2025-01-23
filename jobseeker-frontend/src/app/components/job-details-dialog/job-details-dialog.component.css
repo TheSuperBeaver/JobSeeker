@@ -1,0 +1,73 @@
+.modal-container {
+  border-radius: 16px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden; 
+}
+
+.dialog-header {
+  background: linear-gradient(90deg, rgba(255, 214, 22, 1) 0%, rgba(255, 244, 155, 1) 100%);
+  padding: 16px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #000;
+}
+
+.dialog-content {
+  padding: 16px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.dialog-footer {
+  background: linear-gradient(90deg, rgba(255, 214, 22, 1) 0%, rgba(255, 244, 155, 1) 100%);
+  padding: 8px 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.preferred-button {
+  background-color: #ffd616;
+  color: #000;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.preferred-button:hover {
+  background-color: #ffeb91;
+}
+
+.close-button {
+  background-color: #333333;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.close-button:hover {
+  background-color: #636363;
+}
+
+.hide-button {
+  background-color: #790000;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.hide-button:hover {
+  background-color: #b00202;
+}
+
+/* Ensure Modal Content Doesn't Clip */
+.modal-container {
+  position: relative;
+}
+
+.modal-container:hover .modal-navigation-button {
+  opacity: 1;
+}

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { JobPost } from '../models/job.posts';
 import { HttpClient } from '@angular/common/http';
 import { JobResponse } from '../models/job.response';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class JobsService {
   loadJobs(jobStatus: string | null = null): Promise<any> {
     return new Promise((resolve, reject) => {
       const statusParam = jobStatus && jobStatus.trim() ? jobStatus : 'all';
-      const url = `http://localhost:5000/jobs/${statusParam}`;
+      const url = `${environment.apiUrl}jobs/${statusParam}`;
 
       this.httpClient.get<JobResponse | null>(url).subscribe(
         (response: JobResponse | null) => {
@@ -33,7 +34,7 @@ export class JobsService {
   }
 
   updateJobStatus(id: number, status: string): Promise<any> {
-    const url = `http://localhost:5000/jobs/${id}/status`;
+    const url = `${environment.apiUrl}jobs/${id}/status`;
     return new Promise((resolve, reject) => {
       this.httpClient.post(url, { status }).subscribe(
         (response) => {

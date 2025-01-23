@@ -1,81 +1,54 @@
-<div *ngIf="job" class="card position-relative" [id]="'card-' + job.id">
-  <div class="card-header bg-gradient" [class]="job.site?.toLowerCase() + ' fs-4 position-relative'">
-    <!-- Starred Button -->
-    <button
-      *ngIf="job.status !== JobStatus.Starred"
-      class="btn btn-warning btn-sm position-absolute top-0 start-0 m-2"
-      (click)="updateJobStatus(JobStatus.Starred)"
-    >
-      ★
-    </button>
-
-    <!-- Hidden Button -->
-    <button
-      *ngIf="job.status !== JobStatus.Hidden"
-      class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2"
-      (click)="updateJobStatus(JobStatus.Hidden)"
-    >
-      X
-    </button>
-
-    <div class="container">
-      <p class="fw-bolder ms-3">{{ job.company }}</p>
-      <div class="float-end">
-        <img
-          *ngIf="job.company_logo"
-          [src]="job.company_logo"
-          style="max-width: 100px"
-          class="rounded img-thumbnail"
-        />
-      </div>
-    </div>
-    <p>
-      {{ job.title }}
+<mat-card
+  *ngIf="job"
+  class="job-card rounded shadow"
+  [id]="'card-' + job.id"
+  (click)="toggleCardState(); openCard($event)"
+  [@cardState]="isExpanded ? 'expanded' : 'default'"
+>
+  <mat-card-header class="fs-4 position-relative rounded-top dialog-header">
+    <mat-card-title class="d-flex align-items-center">
+      <img
+        *ngIf="job.company_logo"
+        [src]="job.company_logo"
+        alt="Remote Job"
+        class="company-logo img-thumbnail ms-2 rounded"
+      />
+      <span class="job-title-header">{{ job.title }}</span>
+      <i class="fa-solid fa-at atseparator"></i>
+      <span class="job-title-header">{{ job.company }}</span>
       <img
         *ngIf="job.is_remote"
         src="./work-from-home.png"
-        style="max-width: 50px"
-        class="rounded img-thumbnail"
+        alt="Remote"
+        class="remote-icon ms-2"
       />
-    </p>
-  </div>
-
-  <div class="card-body description-container">
-    <div class="description" [ngClass]="{ expanded: expandedJobId === job.id }">
-      <markdown [data]="job.description"> </markdown>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="description-container">
+      <p class="description" [class.expanded]="isExpanded">
+        <markdown>{{ job.description }}</markdown>
+      </p>
     </div>
-    <button
-      (click)="handleReadMoreToggle()"
-      *ngIf="job.description?.length ?? 0 > 0"
-    >
-      {{ expandedJobId === job.id ? "Read Less" : "Read More" }}
-    </button>
-  </div>
-
-  <div class="card-footer" [class]="job.style">
-    <a
-      [href]="job.job_url"
-      target="_blank"
-      class="icon-link"
-      style="color: white"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        class="bi bi-link"
-        viewBox="0 0 16 16"
-      >
-        <path
-          d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"
-        />
-        <path
-          d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"
-        />
-      </svg>
-      {{ job.site }}
-    </a>
-    ({{ job.date_posted | date : "dd/MM/yyyy" }})
-  </div>
-</div>
+  </mat-card-content>
+  <mat-card-footer>
+    <div class="dialog-footer d-flex justify-content-between">
+      <div class="footer-left">
+        <span>
+          <a [href]="job.job_url" class="job-site-link" target="_blank">{{
+            job.site
+          }}</a>
+        </span>
+        <span *ngIf="job.date_posted">
+          {{ job.date_posted | date : "dd-MM-yyyy" }}
+        </span>
+      </div>
+      <div>
+        <span class="badge" [ngClass]="getBadgeClass()">
+          <i [ngClass]="getStatusIcon()" class="me-1"></i>
+          {{ getStatusText() }}
+        </span>
+      </div>
+    </div>
+  </mat-card-footer>
+</mat-card>
