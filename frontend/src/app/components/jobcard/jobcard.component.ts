@@ -8,12 +8,22 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { JobDetailsDialogComponent } from '../job-details-dialog/job-details-dialog.component';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'jobcard',
   imports: [CommonModule, MarkdownModule, MatCardModule, MatDialogModule, MatButtonModule],
   templateUrl: './jobcard.component.html',
-  styleUrl: './jobcard.component.css'
+  styleUrl: './jobcard.component.css',
+  animations: [
+    trigger('cardState', [
+      state('expanded', style({ transform: 'scale(1.1)' })),
+      state('collapsed', style({ transform: 'scale(1)' })),
+      transition('expanded <=> collapsed', [
+        animate('300ms ease-in-out')
+      ]),
+    ])
+  ]
 })
 export class JobcardComponent {
   @Input() job!: JobPost;

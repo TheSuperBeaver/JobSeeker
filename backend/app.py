@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify
 from jobspy import scrape_jobs
 from flask_migrate import Migrate
 from flask_cors import CORS
-from db.db_model import db, JobPost
+from sqlalchemy import func
+from db.db_model import db, JobPost, JobQueries
 from db.db_utils import get_country_by_code, insert_jobs_into_db
 
 app = Flask(__name__)
@@ -53,30 +54,59 @@ def scrape_jobs_endpoint():
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-# Fetch jobs based on status (with optional "status" parameter)
-@app.route("/jobs/<status>", methods=["GET"])
 @app.route("/jobs", methods=["GET"])
-def get_jobs(status="all"):
-    if status == "all":
-        where_condition = {}
-    else:
-        where_condition = {"status": status}
+def get_jobs():
+    status = request.args.get("status")
+    query_id = request.args.get("queryId")
 
+    # Base where condition
+    where_condition = {}
+
+    # Add status to the condition
+    if status and status != "all":
+        where_condition["status"] = status
+
+    # Add query_id to the condition if it exists
+    if query_id:
+        where_condition["jobquery_id"] = query_id
+
+    # Define the order based on status
     order = (
         [JobPost.status.desc()] if status == "starred" else [JobPost.date_posted.desc()]
     )
 
     try:
+        # Fetch jobs based on the where_condition and order
         jobs = JobPost.query.filter_by(**where_condition).order_by(*order).all()
-        all_jobs_count = JobPost.query.count()
-        new_jobs_count = JobPost.query.filter_by(status="new").count()
-        viewed_jobs_count = JobPost.query.filter_by(status="viewed").count()
-        starred_jobs_count = JobPost.query.filter_by(status="starred").count()
-        hidden_jobs_count = JobPost.query.filter_by(status="hidden").count()
 
+        # Prepare job data
+        results = []
+        for job in jobs:
+            job_dict = {**job.__dict__}
+            if "status" in job_dict:
+                job_dict["status"] = job_dict["status"].value
+            job_dict.pop("_sa_instance_state", None)
+            results.append(job_dict)
+
+        # Count jobs by status (with optional query_id)
+        count_filters = {"jobquery_id": query_id} if query_id else {}
+
+        all_jobs_count = JobPost.query.filter_by(**count_filters).count()
+        new_jobs_count = JobPost.query.filter_by(status="new", **count_filters).count()
+        viewed_jobs_count = JobPost.query.filter_by(
+            status="viewed", **count_filters
+        ).count()
+        starred_jobs_count = JobPost.query.filter_by(
+            status="starred", **count_filters
+        ).count()
+        hidden_jobs_count = JobPost.query.filter_by(
+            status="hidden", **count_filters
+        ).count()
+
+        # Return the response
         return jsonify(
             {
-                "jobs": [job.to_dict() for job in jobs],
+                "jobs": results,
                 "allJobsCount": all_jobs_count,
                 "newJobsCount": new_jobs_count,
                 "viewedJobsCount": viewed_jobs_count,
@@ -105,7 +135,24 @@ def get_job(id):
 # Update job status
 @app.route("/jobs/<int:id>/status", methods=["POST"])
 def update_job_status(id):
-    print(request.json)
+    auth_header = request.headers.get("Authorization")
+    email = request.headers.get("X-User-Email")
+
+    if not auth_header or not email:
+        return jsonify({"error": "Authorization token and email are required."}), 400
+
+    # Validate the access token
+    try:
+        response = request.get(
+            f"https://api.capyx.be/v1/users/{email}",
+            headers={"Authorization": f"{auth_header}"},
+        )
+        if response.status_code != 200:
+            return jsonify({"error": "Invalid access token."}), 401
+    except Exception as e:
+        print(e)
+        return jsonify({"error": "Failed to validate token."}), 401
+
     status = request.json.get("status")
     if not status:
         return jsonify({"error": "Status is required."}), 400
@@ -122,6 +169,29 @@ def update_job_status(id):
     except Exception as e:
         print(e)
         return jsonify({"error": "Error updating job status."}), 500
+
+
+@app.route("/queries/", methods=["GET"])
+def get_jobqueries():
+    subquery = (
+        db.session.query(JobPost.jobquery_id, func.count(JobPost.id).label("nb_jobs"))
+        .group_by(JobPost.jobquery_id)
+        .subquery()
+    )
+
+    query = db.session.query(JobQueries, subquery.c.nb_jobs).outerjoin(
+        subquery, subquery.c.jobquery_id == JobQueries.id
+    )
+
+    results = []
+    for jobquery, nb_jobs in query.all():
+        jobquery_dict = {**jobquery.__dict__, "nb_jobs": nb_jobs or 0}
+        if "status" in jobquery_dict:
+            jobquery_dict["status"] = jobquery_dict["status"].value
+        jobquery_dict.pop("_sa_instance_state", None)
+        results.append(jobquery_dict)
+
+    return jsonify({"queries": results})
 
 
 if __name__ == "__main__":

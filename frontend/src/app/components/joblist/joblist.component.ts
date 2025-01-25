@@ -7,7 +7,7 @@ import { JobFilterComponent } from '../filter/filter.component';
 import { JobcardComponent } from '../jobcard/jobcard.component';
 
 @Component({
-  selector: 'app-joblist',
+  selector: 'joblist',
   imports: [CommonModule, JobFilterComponent, JobcardComponent],
   templateUrl: './joblist.component.html',
   styleUrl: './joblist.component.css'
@@ -15,8 +15,10 @@ import { JobcardComponent } from '../jobcard/jobcard.component';
 export class JoblistComponent {
 
   @Input() jobStatus: string | undefined;
+  @Input() queryId: number | undefined;
   jobPosts: JobPost[] = [];
   selectedJob: JobPost | null = null;
+  loaded: boolean = false;
 
   JobStatus = JobStatus;
   allJobsCount: number = 0;
@@ -34,22 +36,22 @@ export class JoblistComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['jobStatus']) {
-      console.log("jobStatus changed to: ", this.jobStatus);
       this.loadJobs();
     }
   }
 
   async loadJobs(): Promise<void> {
+    this.loaded = false;
     this.jobPosts = [];
     try {
-      console.log("loading job, job status = " + this.jobStatus);
-      await this.jobsService.loadJobs(this.jobStatus);
+      await this.jobsService.loadJobs(this.jobStatus, this.queryId);
       this.jobPosts = this.jobsService.jobs;
       this.allJobsCount = this.jobsService.allJobsCount;
       this.newJobsCount = this.jobsService.newJobsCount;
       this.viewedJobsCount = this.jobsService.viewedJobsCount;
       this.starredJobsCount = this.jobsService.starredJobsCount;
       this.hiddenJobsCount = this.jobsService.hiddenJobsCount;
+      this.loaded = true;
     } catch (error) {
       console.error('Failed to load job posts.', error);
     }

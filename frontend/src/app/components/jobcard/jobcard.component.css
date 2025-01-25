@@ -40,7 +40,7 @@
 }
 
 .dialog-header {
-  background: linear-gradient(180deg, #ffd616, #ffa500);
+  background: linear-gradient(180deg, #008f83, #2ab06d);
   padding: 16px;
   font-size: 1.5rem;
   border-top-left-radius: 8px;
@@ -95,7 +95,7 @@
   align-items: center;
   padding: 8px 16px;
   border-top: 1px solid #ddd;
-  background: linear-gradient(-180deg, #ffd616, #ffa500);
+  background: linear-gradient(180deg, #008f83, #2ab06d);
   background-color: #f9f9f9;
   border-radius: 0 0 8px 8px;
   font-size: 16x;
@@ -136,7 +136,7 @@
 }
 
 .badge-viewed {
-  background-color: #17a586;
+  background-color: #073229;
   color: white;
 }
 

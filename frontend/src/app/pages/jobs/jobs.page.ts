@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
-import { JoblistComponent } from '../../components/joblist/joblist.component';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../components/header/header.component';
+import { QueryTabGroup } from "../../components/query-tab-group/query-tab-group.component";
 
 @Component({
   selector: 'jobs',
-  imports: [JoblistComponent, CommonModule],
+  imports: [
+    HeaderComponent,
+    CommonModule,
+    QueryTabGroup
+  ],
   templateUrl: './jobs.page.html',
   styleUrl: './jobs.page.css'
 })
@@ -16,7 +21,7 @@ export class JobsComponent {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.jobStatus = params.get('status')?? undefined;
+      this.jobStatus = params.get('status') ?? undefined;
     });
   }
 }

@@ -1,0 +1,20 @@
+.badge {
+  display: inline-block;
+  background-color: #3f51b5; /* Material blue color */
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0.2em 0.6em;
+  border-radius: 1rem; /* Makes the badge rounded */
+  margin-left: 8px; /* Space between the label and the badge */
+  vertical-align: middle; /* Align badge to text */
+}
+
+
+.footer {
+  margin-top: 16px;
+  padding: 16px;
+  text-align: center;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+}

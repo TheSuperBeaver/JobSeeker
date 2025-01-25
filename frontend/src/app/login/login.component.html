@@ -1,1 +1,44 @@
-<p>login works!</p>
+<div class="login-container">
+  <img src="company_logo.png" alt="Capyx" class="login-logo" />
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+    <div>
+      <input
+        formControlName="email"
+        type="email"
+        placeholder="Email"
+        class="form-input"
+      />
+      <div
+        class="error"
+        *ngIf="
+          loginForm.get('email')?.invalid && loginForm.get('email')?.touched
+        "
+      >
+        Please enter a valid email.
+      </div>
+    </div>
+
+    <div>
+      <input
+        formControlName="password"
+        type="password"
+        placeholder="Password"
+        class="form-input"
+      />
+      <div
+        class="error"
+        *ngIf="
+          loginForm.get('password')?.invalid &&
+          loginForm.get('password')?.touched
+        "
+      >
+        Password must be at least 4 characters.
+      </div>
+    </div>
+
+    <button type="submit" class="login-button" [disabled]="loginForm.invalid">
+      Log-in
+    </button>
+  </form>
+</div>

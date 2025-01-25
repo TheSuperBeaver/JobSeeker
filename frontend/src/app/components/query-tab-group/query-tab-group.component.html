@@ -1,0 +1,10 @@
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" preserveContent>
+  <mat-tab *ngFor="let subtask of allJobStatus?.subtasks">
+    <ng-template mat-tab-label>
+      {{ subtask.name }}
+      <span class="badge rounded-pill">{{ subtask.nb_jobs }}</span>
+    </ng-template>
+    <joblist [jobStatus]="jobStatus" [queryId]="subtask.query_id"></joblist>
+  </mat-tab>
+</mat-tab-group>
+<footer class="footer"></footer>

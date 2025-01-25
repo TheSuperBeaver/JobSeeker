@@ -1,13 +1,17 @@
 .navbar-inverse {
-  background-color: #ffd616;
+  background-color:  #ffd616;
   border-color: #ffd616;
 }
+
 .navbar-fixed-top {
   top: 0;
   border-width: 0 0 1px;
 }
+
 .navbar {
   z-index: 5;
+  display: flex;
+  align-items: center; /* Ensure vertical alignment of all items */
 }
 
 .navbar .nav-link {
@@ -19,13 +23,88 @@
 }
 
 .navbar-brand {
-    font-size: 38px;
-    font-weight: bolder;
-    color: black;
-    font-family: megrim;
+  font-size: 38px;
+  font-weight: bolder;
+  color: black;
+  font-family: megrim;
 }
 
 .nav-item {
-    font-size: 24px;
-    font-weight: 400;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f4f4f4;
+}
+
+.user-dropdown {
+  position: relative;
+  margin-left: auto; /* Ensure this item is pushed to the right */
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 30px;
+  right: 0; /* Aligns the dropdown menu to the right */
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  z-index: 1000;
+}
+
+.dropdown-menu button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #333;
+}
+
+.dropdown-menu button:hover {
+  text-decoration: underline;
+}
+
+.navbar .ms-auto {
+  margin-left: auto;
+}
+
+.navbar .dropdown-menu {
+  min-width: 150px;
+  text-align: left;
+}
+
+.navbar .dropdown-menu button {
+  background: none;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.navbar .dropdown-menu button:hover {
+  background-color: #f8f9fa;
+}
+
+.right-section {
+  margin-left: auto; /* Ensure it's aligned to the far right */
+}
+
+.user-dropdown .dropdown-menu {
+  right: 0; /* Align dropdown menu to the right edge */
+  left: auto; /* Override any left alignment */
+}
+
+.user-link {
+  color: rgb(50, 50, 50);
+}
+
+.user-link:hover {
+  color: rgb(70, 70, 70);
+  font-weight: 600;
 }

@@ -1,48 +1,65 @@
+import enum
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Enum, text
 from datetime import datetime
 
 db = SQLAlchemy()
+
+
+class JobType(enum.Enum):
+    fulltime: 1
+    parttime: 2
+    internship: 3
+    contract: 4
+
+
+class JobStatus(enum.Enum):
+    new = "new"
+    viewed = "viewed"
+    starred = "starred"
+    hidden = "hidden"
 
 
 class JobPost(db.Model):
     __tablename__ = "jobposts"
 
     id = db.Column(db.Integer, primary_key=True)
-    site_id = db.Column(db.String, nullable=False)
-    jobquery_id = db.Column(db.Integer, ForeignKey("jobqueries.id"))
-    site = db.Column(db.String)
-    title = db.Column(db.String, nullable=False)
-    company = db.Column(db.String, nullable=False)
-    company_url = db.Column(db.String)
-    job_url = db.Column(db.String(1000))
-    location_country = db.Column(db.String)
-    location_city = db.Column(db.String)
-    location_state = db.Column(db.String)
-    description = db.Column(db.Text)
-    job_type = db.Column(db.String)
+    site_id = db.Column(db.String(255, collation="utf8_bin"), nullable=False)
+    jobquery_id = db.Column(db.Integer, ForeignKey("jobqueries.id"), nullable=False)
+    site = db.Column(db.String(255, collation="utf8_bin"))
+    title = db.Column(db.String(255, collation="utf8_bin"), nullable=False)
+    company = db.Column(db.String(255, collation="utf8_bin"), nullable=False)
+    company_url = db.Column(db.String(255, collation="utf8_bin"))
+    job_url = db.Column(db.String(1000, collation="utf8_bin"))
+    location_country = db.Column(db.String(255, collation="utf8_bin"))
+    location_city = db.Column(db.String(255, collation="utf8_bin"))
+    location_state = db.Column(db.String(255, collation="utf8_bin"))
+    description = db.Column(db.Text(collation="utf8_bin"))
+    job_type = db.Column(Enum(JobType, collation="utf8_bin"))
     job_function_interval = db.Column(
-        db.String, default=None
-    )  # Can use Enum in SQLAlchemy if needed
+        db.String(255, collation="utf8_bin"), default=None
+    )
     job_function_min_amount = db.Column(db.Numeric(10, 2))
     job_function_max_amount = db.Column(db.Numeric(10, 2))
-    job_function_currency = db.Column(db.String)
-    job_function_salary_source = db.Column(db.String)
-    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
-    emails = db.Column(db.String)
+    job_function_currency = db.Column(db.String(255, collation="utf8_bin"))
+    job_function_salary_source = db.Column(db.String(255, collation="utf8_bin"))
+    date_posted = db.Column(db.DateTime, default=datetime.now())
+    emails = db.Column(db.String(1000, collation="utf8_bin"))
     is_remote = db.Column(db.Boolean, default=False)
-    job_level = db.Column(db.String)
-    company_industry = db.Column(db.String)
-    company_country = db.Column(db.String)
-    company_addresses = db.Column(db.Text)
-    company_employees_label = db.Column(db.String)
-    company_revenue_label = db.Column(db.String)
-    company_description = db.Column(db.Text)
-    company_logo = db.Column(db.String)
-    status = db.Column(db.String, default="new")
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    job_level = db.Column(db.String(255, collation="utf8_bin"))
+    company_industry = db.Column(db.String(255, collation="utf8_bin"))
+    company_country = db.Column(db.String(255, collation="utf8_bin"))
+    company_addresses = db.Column(db.Text(collation="utf8_bin"))
+    company_employees_label = db.Column(db.String(255, collation="utf8_bin"))
+    company_revenue_label = db.Column(db.String(255, collation="utf8_bin"))
+    company_description = db.Column(db.Text(collation="utf8_bin"))
+    company_logo = db.Column(db.String(1000, collation="utf8_bin"))
+    status = db.Column(Enum(JobStatus, collation="utf8_bin"))
+    created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+        db.DateTime,
+        default=datetime.now(),
+        onupdate=datetime.now(),
     )
 
     def __init__(self, **kwargs):
@@ -84,13 +101,19 @@ class JobPost(db.Model):
         }
 
 
+class JobQueriesStatus(enum.Enum):
+    automatic = "automatic"
+    manual = "manual"
+    deactivated = "deactivated"
+
+
 class JobQueries(db.Model):
     __tablename__ = "jobqueries"
 
     id = db.Column(db.Integer, primary_key=True)
-    search_term = db.Column(db.String(100), nullable=False)
-    town = db.Column(db.String(255))
-    country = db.Column(db.String(100), default="BE")
+    search_term = db.Column(db.String(100, collation="utf8_bin"), nullable=False)
+    town = db.Column(db.String(255, collation="utf8_bin"))
+    country = db.Column(db.String(100, collation="utf8_bin"), default="BE")
     query_google = db.Column(db.Boolean, default=False)
     query_indeed = db.Column(db.Boolean, default=False)
     query_linkedin = db.Column(db.Boolean, default=False)
@@ -99,8 +122,14 @@ class JobQueries(db.Model):
     offset_linkedin = db.Column(db.Integer, default=0)
     results = db.Column(db.Integer, default=25)
     hour_automatic_query = db.Column(db.Integer, default=0)
-    status = db.Column(db.String, default="manual")
-    filters = db.Column(db.String, default="")
+    status = db.Column(Enum(JobQueriesStatus, collation="utf8_bin"))
+    filters = db.Column(db.String(1000, collation="utf8_bin"), default="")
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.now(),
+        onupdate=datetime.now(),
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
