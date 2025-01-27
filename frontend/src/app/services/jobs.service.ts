@@ -14,17 +14,23 @@ export class JobsService {
     private httpClient: HttpClient
   ) { }
 
-  loadJobs(jobStatus: string | null = null, queryId: number | null = null): Promise<any> {
+  loadJobs(jobStatus: string[] | null = null, queryId: number | null = null): Promise<any> {
     return new Promise((resolve, reject) => {
       let url = `${environment.apiUrl}jobs`;
-      let separator = "?"
-      if (jobStatus !== null && jobStatus !== undefined) {
-        url += `${separator}status=${jobStatus}`
-        separator = "&";
+      const params = new URLSearchParams();
+
+      if (jobStatus && jobStatus.length > 0) {
+        params.append("status", jobStatus.join(","));
+      } else {
+        params.append("status", "New,Viewed,Starred");
       }
 
       if (queryId !== null && queryId !== undefined) {
-        url += `${separator}queryId=${queryId}`;
+        params.append("queryId", queryId.toString());
+      }
+
+      if (params.toString()) {
+        url += `?${params.toString()}`;
       }
 
       this.httpClient.get<JobResponse | null>(url).subscribe({
@@ -32,15 +38,15 @@ export class JobsService {
           this.jobResponse = response;
           resolve(true);
         },
-
         error: (error) => {
-          console.error('Error loading jobs:', error);
+          console.error("Error loading jobs:", error);
           this.jobResponse = null;
           reject(false);
         }
       });
     });
   }
+
 
   updateJobStatus(id: number, status: string): Promise<any> {
     const url = `${environment.apiUrl}jobs/${id}/status`;
@@ -69,10 +75,6 @@ export class JobsService {
 
   get jobs(): JobPost[] {
     return this.jobResponse?.jobs ?? [];
-  }
-
-  get allJobsCount(): number {
-    return this.jobResponse?.allJobsCount ?? 0;
   }
 
   get newJobsCount(): number {

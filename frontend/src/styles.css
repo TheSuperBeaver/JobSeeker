@@ -8,6 +8,8 @@
   --background-color: #FFFBEA;
   --text-color: #333333;
   --hover-color: #FFC107;
+  --mat-select-panel-background-color: #333333;
+  --mat-sys-surface-container: #2f4858;
 }
 
 body {

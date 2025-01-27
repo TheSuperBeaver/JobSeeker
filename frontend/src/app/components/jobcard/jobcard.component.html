@@ -35,9 +35,10 @@
     <div class="dialog-footer d-flex justify-content-between">
       <div class="footer-left">
         <span>
-          <a [href]="job.job_url" class="job-site-link" target="_blank">{{
-            job.site
-          }}</a>
+          <a [href]="job.job_url" class="job-site-link" target="_blank">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            {{ job.site }}</a
+          >
         </span>
         <span *ngIf="job.date_posted">
           {{ job.date_posted | date : "dd-MM-yyyy" }}

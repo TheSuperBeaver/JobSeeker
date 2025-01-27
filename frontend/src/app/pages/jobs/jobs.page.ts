@@ -15,13 +15,5 @@ import { QueryTabGroup } from "../../components/query-tab-group/query-tab-group.
   styleUrl: './jobs.page.css'
 })
 export class JobsComponent {
-  jobStatus: string | undefined = undefined;
-
   constructor(private route: ActivatedRoute) { }
-
-  ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.jobStatus = params.get('status') ?? undefined;
-    });
-  }
 }

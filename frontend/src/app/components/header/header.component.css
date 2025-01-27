@@ -15,11 +15,12 @@
 }
 
 .navbar .nav-link {
-  color: var(--text-color);
+  color: black;
 }
 
 .navbar .nav-link:hover {
-  color: var(--hover-color);
+  color: #333;
+  font-weight: bolder;
 }
 
 .navbar-brand {
@@ -32,14 +33,6 @@
 .nav-item {
   font-size: 24px;
   font-weight: 400;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #f4f4f4;
 }
 
 .user-dropdown {
@@ -92,12 +85,12 @@
 }
 
 .right-section {
-  margin-left: auto; /* Ensure it's aligned to the far right */
+  margin-left: auto;
 }
 
 .user-dropdown .dropdown-menu {
-  right: 0; /* Align dropdown menu to the right edge */
-  left: auto; /* Override any left alignment */
+  right: 0; 
+  left: auto;
 }
 
 .user-link {

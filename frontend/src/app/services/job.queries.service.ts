@@ -4,16 +4,12 @@ import { JobQueries, JobQuery } from '../models/jobs.queries';
 import { Injectable } from '@angular/core';
 
 export interface AllJobStatus {
-  name: string;
-  checked: boolean;
-  subtasks?: JobStatus[];
-}
-
-export interface JobStatus {
-  name: string;
-  checked: boolean;
-  query_id: number;
-  nb_jobs: number;
+  statuses: string[]; // List of job statuses (e.g., ["Open", "In Progress", "Closed"])
+  subtasks: {
+    name: string;       // Name of the subtask (e.g., "Task A")
+    query_id: number;   // ID of the query associated with this subtask
+    nb_jobs: number;    // Number of jobs associated with this subtask
+  }[];
 }
 
 @Injectable({
@@ -35,14 +31,13 @@ export class JobQueriesService {
 
       this.httpClient.get<{ queries: JobQuery[] }>(url).subscribe({
         next: (response) => {
-          this.allJobStatus = { name: "All", checked: true, subtasks: [] };
+          this.allJobStatus = { statuses: ["New", "Viewed", "Starred", "Hidden"], subtasks: [] };
 
           if (response?.queries?.length) {
             const flatQueries = response.queries.flat();
 
             this.allJobStatus.subtasks = flatQueries.map(query => ({
               name: query.search_term,
-              checked: true,
               query_id: query.id,
               nb_jobs: query.nb_jobs
             }));
@@ -56,7 +51,7 @@ export class JobQueriesService {
         },
         error: (error) => {
           this.jobQueries = null;
-          this.allJobStatus = { name: "All", checked: true, subtasks: [] };
+          this.allJobStatus = { statuses: ["New", "Viewed", "Starred", "Hidden"], subtasks: [] };
 
           reject(error);
         },

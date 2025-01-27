@@ -1,72 +1,100 @@
-.filters {
-    margin-bottom: 20px;
+
+
+.filter-container {
+  display: flex;
+  justify-content: flex-end; /* Align to the far right */
+  padding: 1rem;
+  background-color: #212529; /* Dark page background */
 }
 
-.filters button {
-    margin-right: 10px;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
+.filter-field {
+  width: 300px;
 }
 
-.btn {
-  font-weight: bold;
-  font-size: large;
+.mat-form-field {
+  color: #ffd616; /* Accent color for text */
 }
 
-.btn:hover {
+.mat-select {
+  color: #ffd616; /* Text color for options */
+  border-radius: 6px; /* Slight rounding for the dropdown */
+}
+
+.mat-option {
+  padding: 8px 16px; /* Better spacing for dropdown options */
+}
+
+.mat-option:hover {
+  background-color: rgba(255, 214, 22, 0.1); /* Subtle hover effect */
+}
+
+
+.filter-container {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #212529;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.filter-field {
+  width: 300px;
+  background: #2c3036;
+  border-radius: 8px;
+  color: white;
+}
+
+.mat-form-field {
+  color: white;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  line-height: 1;
+  margin-right: 8px;
+}
+
+.badge:hover {
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.badge i {
+  font-size: 14px;
+}
+
+.badge-new {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge-hidden {
+  background-color: #6c757d;
+  color: white;
+}
+
+.badge-viewed {
+  background-color: #073229;
+  color: white;
+}
+
+.badge-starred {
+  background-color: #d09e14;
+  color: black;
+}
+
+.mat-mdc-select-panel {
+  background-color: #2c3036;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 4px; 
+  background: #2c3036;
+}
+
+.status-label {
   font-weight: bolder;
-  font-size: large;
-}
-
-.btn-primary {
-  background-color: #FFD616;
-  border-color: #FFD616;
-  color: black;
-}
-
-.btn-primary:hover {
-  background-color: #bc8e04;
-  border-color: #bc8e04;
-  color: white;
-}
-
-.btn-secondary {
-  background-color: #93c942;
-  border-color: #93c942;
-  color: black;
-}
-
-.btn-secondary:hover {
-  background-color: #5c7d29;
-  border-color: #5c7d29;
-  color: white;
-}
-
-.btn-info {
-  background-color: #008f83;
-  border-color: #008f83;
-  color: black;
-}
-
-.btn-info:hover {
-  background-color: #006b7b;
-  border-color: #006b7b;
-  color: white;
-}
-
-.btn-success {
-  color: black;
-}
-
-.btn-success:hover {
-  color: white;
-}
-
-.btn-danger {
-  color: black;
-}
-
-.btn-danger:hover {
-  color: white;
+  font-size: larger;
 }

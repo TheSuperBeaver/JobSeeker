@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { JobStatus } from '../../models/job.status';
 import { JobFilterComponent } from '../filter/filter.component';
 import { JobcardComponent } from '../jobcard/jobcard.component';
+import { AllJobStatus, JobQueriesService } from '../../services/job.queries.service';
 
 @Component({
   selector: 'joblist',
@@ -14,18 +15,18 @@ import { JobcardComponent } from '../jobcard/jobcard.component';
 })
 export class JoblistComponent {
 
-  @Input() jobStatus: string | undefined;
+  @Input() jobStatus: string[] = ['New', 'Viewed', 'Starred'];
   @Input() queryId: number | undefined;
   jobPosts: JobPost[] = [];
   selectedJob: JobPost | null = null;
   loaded: boolean = false;
 
   JobStatus = JobStatus;
-  allJobsCount: number = 0;
   newJobsCount: number = 0;
   viewedJobsCount: number = 0;
   starredJobsCount: number = 0;
   hiddenJobsCount: number = 0;
+  allJobStatus: string[] = ["New", "Viewed", "Starred", "Hidden"];
 
 
   constructor(private jobsService: JobsService) { }
@@ -46,7 +47,6 @@ export class JoblistComponent {
     try {
       await this.jobsService.loadJobs(this.jobStatus, this.queryId);
       this.jobPosts = this.jobsService.jobs;
-      this.allJobsCount = this.jobsService.allJobsCount;
       this.newJobsCount = this.jobsService.newJobsCount;
       this.viewedJobsCount = this.jobsService.viewedJobsCount;
       this.starredJobsCount = this.jobsService.starredJobsCount;
@@ -55,5 +55,10 @@ export class JoblistComponent {
     } catch (error) {
       console.error('Failed to load job posts.', error);
     }
+  }
+
+  updateJobStatus(selectedStatuses: string[]): void {
+    this.jobStatus = selectedStatuses;
+    this.loadJobs();
   }
 }

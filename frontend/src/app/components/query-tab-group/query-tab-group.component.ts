@@ -19,7 +19,7 @@ import { MatTabsModule } from '@angular/material/tabs';
   styleUrl: './query-tab-group.component.css'
 })
 export class QueryTabGroup {
-  jobStatus: string | undefined = undefined;
+  jobStatus: string[] = [];
   jobQueries: JobQueries | null = null;
   allJobStatus: AllJobStatus | null = null;
 
@@ -27,7 +27,7 @@ export class QueryTabGroup {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.jobStatus = params.get('status') ?? undefined;
+      this.jobStatus = params.get('jobStatus')?.split(',') || [];
     });
     this.loadJobs();
   }
@@ -42,7 +42,7 @@ export class QueryTabGroup {
     }
   }
 
-  update(status: boolean, query_id?: number) {
-    throw new Error('Method not implemented.');
+  updateJobStatus(selectedStatuses: string[]): void {
+    this.jobStatus = selectedStatuses;
   }
 }

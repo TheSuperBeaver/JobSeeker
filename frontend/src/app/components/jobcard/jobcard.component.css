@@ -1,21 +1,11 @@
-:root {
-  --primary-color: #007bff;
-  --light-gray: #f5f5f5;
-  --dark-gray: #555;
-}
-
 .rounded {
   border-radius: 12px;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 .atseparator {
   margin-left: 10px;
   margin-right: 10px;
-  color: #008f83;
+  color: #FFD616;
   text-shadow: grey;
   font-weight: bold;
 

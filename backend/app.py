@@ -56,30 +56,32 @@ def scrape_jobs_endpoint():
 
 @app.route("/jobs", methods=["GET"])
 def get_jobs():
-    status = request.args.get("status")
+    statuses = request.args.get("status")
     query_id = request.args.get("queryId")
 
-    # Base where condition
-    where_condition = {}
+    status_list = [status.lower() for status in statuses.split(",")] if statuses else []
 
-    # Add status to the condition
-    if status and status != "all":
-        where_condition["status"] = status
+    where_condition = []
 
-    # Add query_id to the condition if it exists
+    if status_list:
+        where_condition.append(JobPost.status.in_(status_list))
+
     if query_id:
-        where_condition["jobquery_id"] = query_id
+        where_condition.append(JobPost.jobquery_id == query_id)
 
-    # Define the order based on status
     order = (
-        [JobPost.status.desc()] if status == "starred" else [JobPost.date_posted.desc()]
+        [JobPost.status.desc()]
+        if "starred" in status_list
+        else [JobPost.date_posted.desc()]
     )
 
     try:
-        # Fetch jobs based on the where_condition and order
-        jobs = JobPost.query.filter_by(**where_condition).order_by(*order).all()
+        query = JobPost.query
+        if where_condition:
+            query = query.filter(*where_condition)
 
-        # Prepare job data
+        jobs = query.order_by(*order).all()
+
         results = []
         for job in jobs:
             job_dict = {**job.__dict__}
@@ -88,10 +90,8 @@ def get_jobs():
             job_dict.pop("_sa_instance_state", None)
             results.append(job_dict)
 
-        # Count jobs by status (with optional query_id)
         count_filters = {"jobquery_id": query_id} if query_id else {}
 
-        all_jobs_count = JobPost.query.filter_by(**count_filters).count()
         new_jobs_count = JobPost.query.filter_by(status="new", **count_filters).count()
         viewed_jobs_count = JobPost.query.filter_by(
             status="viewed", **count_filters
@@ -103,11 +103,9 @@ def get_jobs():
             status="hidden", **count_filters
         ).count()
 
-        # Return the response
         return jsonify(
             {
                 "jobs": results,
-                "allJobsCount": all_jobs_count,
                 "newJobsCount": new_jobs_count,
                 "viewedJobsCount": viewed_jobs_count,
                 "starredJobsCount": starred_jobs_count,

@@ -1,13 +1,13 @@
 .badge {
   display: inline-block;
-  background-color: #3f51b5; /* Material blue color */
-  color: white;
+  background-color: #ffd616;
+  color: black;
   font-size: 12px;
   font-weight: bold;
   padding: 0.2em 0.6em;
-  border-radius: 1rem; /* Makes the badge rounded */
-  margin-left: 8px; /* Space between the label and the badge */
-  vertical-align: middle; /* Align badge to text */
+  border-radius: 1rem; 
+  margin-left: 8px;
+  vertical-align: middle;
 }
 
 
