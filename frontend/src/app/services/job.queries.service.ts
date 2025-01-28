@@ -2,6 +2,7 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from "@angular/common/http";
 import { JobQueries, JobQuery } from '../models/jobs.queries';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export interface AllJobStatus {
   statuses: string[]; // List of job statuses (e.g., ["Open", "In Progress", "Closed"])
@@ -57,6 +58,14 @@ export class JobQueriesService {
         },
       });
     });
+  }
+
+  addQuery(query: any): Observable<any> {
+    return this.httpClient.post(`${environment.apiUrl}queries/`, query);
+  }
+
+  modifyQuery(id: number, query: any): Observable<any> {
+    return this.httpClient.put(`${environment.apiUrl}queries/`, query);
   }
 
 }

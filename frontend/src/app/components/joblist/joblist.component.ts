@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { JobStatus } from '../../models/job.status';
 import { JobFilterComponent } from '../filter/filter.component';
 import { JobcardComponent } from '../jobcard/jobcard.component';
-import { AllJobStatus, JobQueriesService } from '../../services/job.queries.service';
 
 @Component({
   selector: 'joblist',

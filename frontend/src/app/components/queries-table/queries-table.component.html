@@ -1,0 +1,108 @@
+<div class="queries-container">
+  <div class="actions">
+    <button (click)="addQuery()" class="add-query-button">Add Query</button>
+  </div>
+
+  <table mat-table [dataSource]="jobQueries" class="mat-table">
+    <ng-container matColumnDef="searchTerm">
+      <th mat-header-cell *matHeaderCellDef>Search term</th>
+      <td mat-cell *matCellDef="let query">{{ query.search_term }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="town">
+      <th mat-header-cell *matHeaderCellDef>Town</th>
+      <td mat-cell *matCellDef="let query">
+        <div class="town-container">
+          <span class="town-name">{{ query.town }}</span>
+          <img
+            class="country-flag"
+            [src]="
+              'https://flagcdn.com/w40/' + query.country.toLowerCase() + '.png'
+            "
+            alt="{{ query.country }}"
+            title="{{ query.country }}"
+            width="30"
+            height="20"
+          />
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="queries">
+      <th mat-header-cell *matHeaderCellDef>Queries</th>
+      <td mat-cell *matCellDef="let query" class="queries-icons">
+        <i
+          *ngIf="query.query_google"
+          class="fa-brands fa-google queries-icons"
+          title="Google"
+        ></i>
+        <i
+          *ngIf="query.query_indeed"
+          class="fa-solid fa-briefcase queries-icons"
+          title="Indeed"
+        ></i>
+        <i
+          *ngIf="query.query_linkedin"
+          class="fa-brands fa-linkedin queries-icons"
+          title="LinkedIn"
+        ></i>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="results">
+      <th mat-header-cell *matHeaderCellDef>Results wanted</th>
+      <td mat-cell *matCellDef="let query">{{ query.results }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="automatic_hour">
+      <th mat-header-cell *matHeaderCellDef>Hour batch retrieval</th>
+      <td mat-cell *matCellDef="let query">
+        {{ query.hour_automatic_query }}:00
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="filters">
+      <th mat-header-cell *matHeaderCellDef>Filters</th>
+      <td mat-cell *matCellDef="let query">{{ query.filters }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let query">{{ query.status }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="nb_jobs">
+      <th mat-header-cell *matHeaderCellDef>Number of jobs</th>
+      <td mat-cell *matCellDef="let query">{{ query.nb_jobs }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let query" class="mat-cell">
+        <button
+          class="action-button modify-button"
+          (click)="modifyQuery(query)"
+        >
+          <i class="fa-solid fa-pen"></i> Modify
+        </button>
+        <button class="action-button delete-button" (click)="deleteQuery()">
+          <i class="fa-solid fa-trash"></i> Delete
+        </button>
+        <button class="action-button run-button" (click)="runQuery()">
+          <i class="fa-solid fa-play"></i> Run
+        </button>
+      </td>
+    </ng-container>
+
+    <tr
+      mat-header-row
+      *matHeaderRowDef="displayedColumns"
+      class="mat-header-row"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      class="mat-row"
+    ></tr>
+  </table>
+</div>

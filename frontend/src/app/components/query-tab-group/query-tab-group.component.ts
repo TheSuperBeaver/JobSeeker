@@ -12,7 +12,6 @@ import { MatTabsModule } from '@angular/material/tabs';
   imports: [
     JoblistComponent,
     CommonModule,
-    FooterComponent,
     MatTabsModule
   ],
   templateUrl: './query-tab-group.component.html',
