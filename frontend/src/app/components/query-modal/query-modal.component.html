@@ -3,7 +3,7 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Search Term</mat-label>
     <input matInput formControlName="search_term" required />
-    <mat-error *ngIf="queryForm.get('search_term').invalid"
+    <mat-error *ngIf="queryForm.get('search_term')?.invalid"
       >Search term is required</mat-error
     >
   </mat-form-field>

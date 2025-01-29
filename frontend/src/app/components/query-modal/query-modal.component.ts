@@ -9,12 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOption } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-query-modal',
   templateUrl: './query-modal.component.html',
   styleUrls: ['./query-modal.component.css'],
-  imports: [MatFormField, MatLabel, MatError, FormsModule, MatCheckboxModule, MatOption, ReactiveFormsModule]
+  imports: [MatFormField, MatLabel, MatError, FormsModule, MatCheckboxModule, MatOption, ReactiveFormsModule, CommonModule]
 })
 export class QueryModalComponent {
   queryForm: FormGroup;

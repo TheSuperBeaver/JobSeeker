@@ -1,48 +1,58 @@
 services:
-  python-backend:
+  backend:
+    container_name: jobseeker-backend
     build:
-      context: .
-      dockerfile: Dockerfile
-    working_dir: /app/backend
+      context: ./backend
+      dockerfile: Dockerfile.app
+    environment:
+      - FLASK_ENV=production
+      - MYSQL_HOST=host.docker.internal 
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=jobspy
+      - MYSQL_USER=jobspy
+      - MYSQL_PASSWORD=jobspy
     ports:
       - "5000:5000"
+    volumes:
+      - ./backend:/app
+    restart: unless-stopped
+    networks:
+      - mainNetwork
+
+  batch:
+    container_name: jobseeker-batch
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.batch
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_ENV=production
+      - MYSQL_HOST=mysql-db
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=jobspy
+      - MYSQL_USER=jobspy
+      - MYSQL_PASSWORD=jobspy
+    restart: unless-stopped
+    networks:
+      - mainNetwork
+
+  frontend:
+    container_name: jobseeker-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "4200:4200"
     environment:
       - MYSQL_HOST=mysql-db
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=jobspy
       - MYSQL_USER=jobspy
       - MYSQL_PASSWORD=jobspy
-    depends_on:
-      - mysql-db
-
-  node-frontend:
-    image: node:18
-    working_dir: /app/frontend
-    volumes:
-      - ./frontend:/app/frontend
-    ports:
-      - "3000:3000"
-    command: >
-      sh -c "npm install && npm start"
-    environment:
-      - MYSQL_HOST=mysql-db
-      - MYSQL_PORT=3306
-      - MYSQL_DATABASE=jobspy
-      - MYSQL_USER=jobspy
-      - MYSQL_PASSWORD=jobspy
-
-  mysql-db:
-    image: mysql:8
-    container_name: mysql-db
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: jobspy
-      MYSQL_USER: jobspy
-      MYSQL_PASSWORD: jobspy
-    volumes:
-      - mysql-data:/var/lib/mysql
-
-volumes:
-  mysql-data:
+    restart: unless-stopped
+    networks:
+      - mainNetwork
+networks:
+  mainNetwork:
+  

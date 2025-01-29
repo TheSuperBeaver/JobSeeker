@@ -5,14 +5,20 @@ from flask_cors import CORS
 from sqlalchemy import func
 from db.db_model import db, JobPost, JobQueries
 from db.db_utils import get_country_by_code, insert_jobs_into_db
+import os
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://jobspy:jobspy@localhost/jobspy"
+MYSQL_HOST = os.getenv("MYSQL_HOST", "host.docker.internal")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    f"mysql+pymysql://jobspy:jobspy@{MYSQL_HOST}/jobspy"
+)
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
 migrate = Migrate(app, db)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 
 @app.route("/scrape_jobs", methods=["POST"])
@@ -193,4 +199,4 @@ def get_jobqueries():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(host="0.0.0.0", port=5000)
