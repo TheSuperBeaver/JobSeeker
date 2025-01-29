@@ -1,12 +1,17 @@
+import datetime
+import enum
 import json
 from sqlalchemy.exc import SQLAlchemyError
 from jobspy import Country
 from db.db_model import JobPost, JobQueries, db
+from sqlalchemy import Enum
+
 
 def load_config(config_file="config.json"):
     """Load configuration from a JSON file."""
     with open(config_file, "r") as file:
         return json.load(file)
+
 
 def get_country_by_code(country_code: str):
     """Retrieve the country name based on the ISO code."""
@@ -15,6 +20,7 @@ def get_country_by_code(country_code: str):
         if country.value[1] == country_code:
             return country.name.capitalize()
     raise ValueError(f"Invalid country code: '{country_code}'.")
+
 
 def insert_jobs_into_db(jobs):
     """
@@ -26,7 +32,7 @@ def insert_jobs_into_db(jobs):
             if isinstance(job, str):
                 print(f"{job} is of type str, shouldn't happen")
                 continue
-            
+
             # Check if the job already exists
             existing_job = JobPost.query.filter_by(id=job.id).first()
             if existing_job:
@@ -37,7 +43,11 @@ def insert_jobs_into_db(jobs):
             if isinstance(job.location.country, Country):
                 country = job.location.country.name
 
-            jobType = " - ".join(str(jt.name) for jt in job.job_type) if job.job_type else None
+            jobType = (
+                " - ".join(str(jt.name) for jt in job.job_type)
+                if job.job_type
+                else None
+            )
 
             new_job = JobPost(
                 id=job.id,
@@ -60,7 +70,7 @@ def insert_jobs_into_db(jobs):
                 company_employees_label=job.company_num_employees,
                 company_revenue_label=job.company_revenue,
                 company_description=job.company_description,
-                company_logo=job.company_logo
+                company_logo=job.company_logo,
             )
 
             db.session.add(new_job)
@@ -74,13 +84,18 @@ def insert_jobs_into_db(jobs):
     finally:
         db.session.remove()
 
+
 def get_jobquery_by_id(jobquery_id):
     """Retrieve a job query by its ID."""
     return JobQueries.query.filter_by(id=jobquery_id).first()
 
+
 def get_all_automatic_jobqueries():
     """Get all automatic job queries for the current hour."""
-    return JobQueries.query.filter_by(status="automatic", hour_automatic_query=db.func.hour(db.func.now())).all()
+    return JobQueries.query.filter_by(
+        status="automatic", hour_automatic_query=db.func.hour(db.func.now())
+    ).all()
+
 
 def identify_platform(input_string):
     """Identify the platform from the job site prefix."""
@@ -96,3 +111,12 @@ def identify_platform(input_string):
     else:
         return None
 
+
+def json_encoder(obj):
+    if isinstance(obj, enum.Enum):
+        return obj.value
+    if isinstance(obj, datetime.datetime):
+        return obj.isoformat()
+    if isinstance(obj, datetime.date):
+        return obj.isoformat()
+    raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")

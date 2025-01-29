@@ -1,6 +1,7 @@
 import enum
+from flask import json
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey, Enum, text
+from sqlalchemy import ForeignKey, Enum
 from datetime import datetime
 
 db = SQLAlchemy()
@@ -12,12 +13,18 @@ class JobType(enum.Enum):
     internship: 3
     contract: 4
 
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
 
 class JobStatus(enum.Enum):
     new = "new"
     viewed = "viewed"
     starred = "starred"
     hidden = "hidden"
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
 class JobPost(db.Model):
@@ -105,6 +112,9 @@ class JobQueriesStatus(enum.Enum):
     automatic = "automatic"
     manual = "manual"
     deactivated = "deactivated"
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
 class JobQueries(db.Model):
