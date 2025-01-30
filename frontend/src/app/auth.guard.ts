@@ -9,10 +9,14 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): boolean {
     const token = localStorage.getItem('accessToken');
-    if (token) {
+    const expiration = localStorage.getItem('tokenExpiration');
+
+    if (token && expiration && Date.now() < +expiration) {
       return true;
     } else {
-      this.router.navigate(['/login']);
+      this.router.navigate(['login']);
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('tokenExpiration')
       return false;
     }
   }

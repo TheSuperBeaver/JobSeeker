@@ -108,6 +108,30 @@ class JobPost(db.Model):
         }
 
 
+class JobUserStatus(db.Model):
+    __tablename__ = "job_user_status"
+
+    id = db.Column(db.Integer, primary_key=True)
+    job_id = db.Column(db.Integer, ForeignKey("jobposts.id"), nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey("users.id"), nullable=False)
+    status = db.Column(Enum(JobStatus, collation="utf8_bin"))
+
+
+class Users(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255, collation="utf8_bin"))
+    capyx_id = db.Column(db.Integer)
+    role_id = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.now(),
+        onupdate=datetime.now(),
+    )
+
+
 class JobQueriesStatus(enum.Enum):
     automatic = "automatic"
     manual = "manual"

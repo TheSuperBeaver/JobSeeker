@@ -8,7 +8,7 @@ export class LoginGuard implements CanActivate {
   constructor(private router: Router) { }
 
   canActivate(): boolean {
-    const isLoggedIn = !!localStorage.getItem('accessToken');
+    const isLoggedIn = !!localStorage.getItem('accessToken') && !!localStorage.getItem('tokenExpiration');
     if (isLoggedIn) {
       this.router.navigate(['/jobs']);
       return false;

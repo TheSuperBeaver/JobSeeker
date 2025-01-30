@@ -15,6 +15,17 @@ export class JobsService {
   ) { }
 
   loadJobs(jobStatus: string[] | null = null, queryId: number | null = null): Promise<any> {
+
+    const accessToken = localStorage.getItem('accessToken');
+    const email = localStorage.getItem('email');
+
+    // Set up headers
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'X-User-Email': email || '' // Use a custom header for email
+    });
+
+
     return new Promise((resolve, reject) => {
       let url = `${environment.apiUrl}jobs`;
       const params = new URLSearchParams();
@@ -33,7 +44,7 @@ export class JobsService {
         url += `?${params.toString()}`;
       }
 
-      this.httpClient.get<JobResponse | null>(url).subscribe({
+      this.httpClient.get<JobResponse | null>(url, { headers }).subscribe({
         next: (response) => {
           this.jobResponse = response;
           resolve(true);

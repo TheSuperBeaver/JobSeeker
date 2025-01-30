@@ -13,7 +13,13 @@ app.config.from_object(Config)
 
 db.init_app(app)
 migrate = Migrate(app, db)
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+CORS(
+    app,
+    resources={r"/*": {"origins": "*"}},
+    supports_credentials=True,
+    allow_headers=["Content-Type", "Authorization", "X-User-Email"],
+    methods=["GET", "POST", "OPTIONS"],
+)
 app.register_blueprint(job_routes, url_prefix="/jobs")
 app.register_blueprint(query_routes, url_prefix="/queries")
 app.json.default = json_encoder

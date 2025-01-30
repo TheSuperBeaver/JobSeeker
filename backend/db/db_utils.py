@@ -4,7 +4,6 @@ import json
 from sqlalchemy.exc import SQLAlchemyError
 from jobspy import Country
 from db.db_model import JobPost, JobQueries, db
-from sqlalchemy import Enum
 
 
 def load_config(config_file="config.json"):

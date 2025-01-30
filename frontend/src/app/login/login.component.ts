@@ -33,7 +33,10 @@ export class LoginComponent {
       this.http.post(`${environment.authUrl}`, loginData).subscribe({
         next: (response: any) => {
 
+          const expirationTime = Date.now() + response.expiresIn;
+
           localStorage.setItem('accessToken', response.accessToken);
+          localStorage.setItem('tokenExpiration', expirationTime.toString());
           localStorage.setItem('email', loginData.email);
           this.router.navigate(['jobs']);
         },
