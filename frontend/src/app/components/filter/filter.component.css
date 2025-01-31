@@ -28,6 +28,9 @@
   background-color: rgba(255, 214, 22, 0.1); /* Subtle hover effect */
 }
 
+.mat-mdc-form-field {
+  margin: 10px;
+}
 
 .filter-container {
   display: flex;

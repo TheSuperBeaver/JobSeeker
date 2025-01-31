@@ -27,3 +27,4 @@ export interface JobQuery {
   updated_at: Date;
   nb_jobs: number;
 }
+

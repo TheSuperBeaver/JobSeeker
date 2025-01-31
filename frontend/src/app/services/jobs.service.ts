@@ -14,7 +14,7 @@ export class JobsService {
     private httpClient: HttpClient
   ) { }
 
-  loadJobs(jobStatus: string[] | null = null, queryId: number | null = null): Promise<any> {
+  loadJobs(jobStatus: string[] | null = null, queryId: number | null = null, userId: number | null = null): Promise<any> {
 
     const accessToken = localStorage.getItem('accessToken');
     const email = localStorage.getItem('email');
@@ -38,6 +38,10 @@ export class JobsService {
 
       if (queryId !== null && queryId !== undefined) {
         params.append("queryId", queryId.toString());
+      }
+
+      if (userId !== null && userId !== undefined && userId !== 0) {
+        params.append("userId", String(userId));
       }
 
       if (params.toString()) {
