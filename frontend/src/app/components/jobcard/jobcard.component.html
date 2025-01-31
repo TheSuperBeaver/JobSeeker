@@ -3,7 +3,6 @@
   class="job-card rounded shadow"
   [id]="'card-' + job.id"
   (click)="toggleCardState(); openCard($event)"
-  [@cardState]="isExpanded ? 'expanded' : 'default'"
 >
   <mat-card-header class="fs-4 position-relative rounded-top dialog-header">
     <mat-card-title class="d-flex align-items-center">

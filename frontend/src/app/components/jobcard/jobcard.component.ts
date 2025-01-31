@@ -7,23 +7,12 @@ import { JobsService } from '../../services/jobs.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { JobDetailsDialogComponent } from '../job-details-dialog/job-details-dialog.component';
-import { trigger, state, style, animate, transition } from '@angular/animations';
-
+import { JobDetailsDialogComponent } from '../../dialogs/job-details-dialog/job-details-dialog.component';
 @Component({
   selector: 'jobcard',
   imports: [CommonModule, MarkdownModule, MatCardModule, MatDialogModule, MatButtonModule],
   templateUrl: './jobcard.component.html',
-  styleUrl: './jobcard.component.css',
-  animations: [
-    trigger('cardState', [
-      state('expanded', style({ transform: 'scale(1.1)' })),
-      state('collapsed', style({ transform: 'scale(1)' })),
-      transition('expanded <=> collapsed', [
-        animate('300ms ease-in-out')
-      ]),
-    ])
-  ]
+  styleUrl: './jobcard.component.css'
 })
 export class JobcardComponent {
   @Input() job!: JobPost;
@@ -41,7 +30,6 @@ export class JobcardComponent {
     if (this.job?.id) {
       this.jobsService.updateJobStatus(this.job.id, status).then(
         (response) => {
-          console.log('Job status updated successfully:', response);
           this.job.status = status;
         },
         (error) => {
@@ -63,8 +51,7 @@ export class JobcardComponent {
         data: {
           job: this.job
         },
-        panelClass: 'dialog-container',
-        enterAnimationDuration: '150ms'
+        panelClass: 'dialog-container'
       });
     }
   }

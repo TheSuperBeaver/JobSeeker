@@ -75,7 +75,6 @@ export class UsersService {
                 ? this.allowedRoles.includes(response.user.role_id)
                 : false;
 
-              console.log('loaded can view other users :', canView);
               this.canViewOtherUsersSubject.next(canView);
             } else {
               this.canViewOtherUsersSubject.next(false);

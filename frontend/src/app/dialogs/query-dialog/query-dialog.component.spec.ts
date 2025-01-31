@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QueryModalComponent } from './query-modal.component';
+import { QueryDialogComponent } from './query-dialog.component';
 
 describe('QueryModalComponent', () => {
-  let component: QueryModalComponent;
-  let fixture: ComponentFixture<QueryModalComponent>;
+  let component: QueryDialogComponent;
+  let fixture: ComponentFixture<QueryDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QueryModalComponent]
+      imports: [QueryDialogComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(QueryModalComponent);
+    fixture = TestBed.createComponent(QueryDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

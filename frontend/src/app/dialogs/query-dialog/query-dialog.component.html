@@ -1,0 +1,105 @@
+<form [formGroup]="queryForm" (ngSubmit)="onSubmit()" class="form">
+  <h2 mat-dialog-title class="title">
+    {{ isEdit ? "Modify Query" : "Add Query" }}
+  </h2>
+  <mat-form-field appearance="fill" class="full-width">
+    <label>
+      <input class="input" matInput formControlName="search_term" required />
+      <span>Search Term</span>
+    </label>
+    <mat-error *ngIf="queryForm.get('search_term')?.invalid"
+      >Search term is required</mat-error
+    >
+  </mat-form-field>
+  <div class="flex">
+    <mat-form-field appearance="fill" class="full-width">
+      <label>
+        <input class="input" matInput formControlName="town" required="" />
+        <span>Town</span>
+      </label>
+      <mat-error *ngIf="queryForm.get('town')?.invalid"
+        >Town is required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <label>
+        <input class="input" matInput formControlName="country" required />
+        <span>Country</span>
+      </label>
+      <mat-error *ngIf="queryForm.get('country')?.invalid"
+        >Country is required</mat-error
+      >
+    </mat-form-field>
+  </div>
+  <div class="flex">
+    <mat-form-field appearance="fill" class="full-width">
+      <label>
+        <input class="input" matInput formControlName="results" />
+        <span>Results</span>
+      </label>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Hour auto-query</mat-label>
+
+      <input
+        matInput
+        [matTimepicker]="picker"
+        formControlName="hour_automatic_query"
+        class="input"
+      />
+
+      <mat-timepicker #picker interval="60m" class="input" />
+    </mat-form-field>
+  </div>
+  <div class="flex">Search sites</div>
+  <div class="flex">
+    <label class="material-checkbox">
+      <input type="checkbox" formControlName="query_google" />
+      <span class="checkmark"></span>
+      Google
+    </label>
+    <label class="material-checkbox">
+      <input type="checkbox" formControlName="query_indeed" />
+      <span class="checkmark"></span>
+      Indeed
+    </label>
+    <label class="material-checkbox">
+      <input type="checkbox" formControlName="query_linkedin" />
+      <span class="checkmark"></span>
+      LinkedIn
+    </label>
+  </div>
+  <div class="flex">
+    <mat-form-field appearance="fill" class="full-width">
+      <label>
+        <input class="input" matInput formControlName="filters" />
+        <span>Filters</span>
+      </label>
+    </mat-form-field>
+  </div>
+  <div class="flex">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="automatic">Automatic</mat-option>
+        <mat-option value="deactivated">Deactivated</mat-option>
+        <mat-option value="manual">Manual</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions class="modal-actions">
+    <button class="close-button" mat-button (click)="onCancel()">Cancel</button>
+    <button
+      mat-raised-button
+      class="preferred-button"
+      color="primary"
+      type="submit"
+      [disabled]="queryForm.invalid"
+    >
+      {{ isEdit ? "Save" : "Add" }}
+    </button>
+  </div>
+</form>

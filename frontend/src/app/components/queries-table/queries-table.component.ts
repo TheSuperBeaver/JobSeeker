@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { QueryModalComponent } from '../query-modal/query-modal.component';
+import { QueryDialogComponent } from '../../dialogs/query-dialog/query-dialog.component';
 
 @Component({
   selector: 'queries-table',
@@ -32,8 +32,12 @@ export class QueriesTableComponent implements OnInit {
   }
 
   addQuery() {
-    const dialogRef = this.dialog.open(QueryModalComponent, {
-      width: '500px',
+    const dialogRef = this.dialog.open(QueryDialogComponent, {
+      width: 'auto',
+      maxWidth: '90vw',
+      height: 'auto',
+      maxHeight: '90vh',
+      panelClass: 'custom-modal-container',
       data: { query: null },
     });
 
@@ -41,15 +45,18 @@ export class QueriesTableComponent implements OnInit {
       if (result) {
         this.jobQueriesService.addQuery(result).subscribe(() => {
           console.log('Query added successfully');
-          // Reload your table data
         });
       }
     });
   }
 
   modifyQuery(query: JobQuery) {
-    const dialogRef = this.dialog.open(QueryModalComponent, {
-      width: '500px',
+    const dialogRef = this.dialog.open(QueryDialogComponent, {
+      width: 'auto',
+      maxWidth: '90vw',
+      height: 'auto',
+      maxHeight: '90vh',
+      panelClass: 'custom-modal-container',
       data: { query },
     });
 
@@ -57,7 +64,6 @@ export class QueriesTableComponent implements OnInit {
       if (result) {
         this.jobQueriesService.modifyQuery(query.id, result).subscribe(() => {
           console.log('Query modified successfully');
-          // Reload your table data
         });
       }
     });

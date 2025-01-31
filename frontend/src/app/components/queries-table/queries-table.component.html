@@ -103,6 +103,7 @@
       mat-row
       *matRowDef="let row; columns: displayedColumns"
       class="mat-row"
+      (click)="modifyQuery(row)"
     ></tr>
   </table>
 </div>

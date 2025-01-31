@@ -10,6 +10,7 @@
   --hover-color: #FFC107;
   --mat-select-panel-background-color: #333333;
   --mat-sys-surface-container: #2f4858;
+  --mdc-dialog-container-color: transparent;
 }
 
 body {

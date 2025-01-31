@@ -146,3 +146,16 @@
 .queries-container {
   margin: 20px;
 }
+
+.custom-modal-container .mat-mdc-dialog-container {
+  background: transparent !important; /* Remove white background */
+  box-shadow: none; /* Remove shadow if needed */
+  padding: 0; /* Remove extra padding */
+}
+
+.custom-modal-container .mat-mdc-dialog-surface {
+  background-color: #1a1a1a !important; /* Dark background */
+  color: white; /* Text color */
+  border-radius: 20px;
+  padding: 20px;
+}
