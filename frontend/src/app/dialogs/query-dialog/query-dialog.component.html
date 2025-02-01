@@ -41,16 +41,23 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Hour auto-query</mat-label>
-
-      <input
-        matInput
-        [matTimepicker]="picker"
-        formControlName="hour_automatic_query"
-        class="input"
-      />
-
-      <mat-timepicker #picker interval="60m" class="input" />
+      <label>
+        <input
+          class="input"
+          type="number"
+          matInput
+          formControlName="hour_automatic_query"
+        />
+        <span>Hour auto-query</span>
+      </label>
+    </mat-form-field>
+  </div>
+  <div class="flex">
+    <mat-form-field appearance="fill" class="full-width">
+      <label>
+        <input class="input" matInput formControlName="filters" />
+        <span>Filters</span>
+      </label>
     </mat-form-field>
   </div>
   <div class="flex">Search sites</div>
@@ -73,14 +80,6 @@
   </div>
   <div class="flex">
     <mat-form-field appearance="fill" class="full-width">
-      <label>
-        <input class="input" matInput formControlName="filters" />
-        <span>Filters</span>
-      </label>
-    </mat-form-field>
-  </div>
-  <div class="flex">
-    <mat-form-field appearance="fill" class="full-width">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status">
         <mat-option value="automatic">Automatic</mat-option>
@@ -90,7 +89,7 @@
     </mat-form-field>
   </div>
 
-  <div mat-dialog-actions class="modal-actions">
+  <div mat-dialog-actions class="dialog-actions">
     <button class="close-button" mat-button (click)="onCancel()">Cancel</button>
     <button
       mat-raised-button

@@ -1,0 +1,19 @@
+<div class="content flex">
+  <h2 mat-dialog-title class="title">Confirmation</h2>
+  <mat-dialog-content>
+    <p class="message">{{ data.message }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-button (click)="onCancel()" class="cancel-button">
+      Cancel
+    </button>
+    <button
+      mat-button
+      color="warn"
+      (click)="onConfirm()"
+      class="confirm-button"
+    >
+      Confirm
+    </button>
+  </mat-dialog-actions>
+</div>

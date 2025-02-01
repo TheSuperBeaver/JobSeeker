@@ -8,10 +8,10 @@ db = SQLAlchemy()
 
 
 class JobType(enum.Enum):
-    fulltime: 1
-    parttime: 2
-    internship: 3
-    contract: 4
+    fulltime = "fulltime"
+    parttime = "parttime"
+    internship = "internship"
+    contract = "contract"
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)

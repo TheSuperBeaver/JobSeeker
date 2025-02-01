@@ -1,6 +1,7 @@
 import datetime
 import enum
 import json
+import pandas as pd
 from sqlalchemy.exc import SQLAlchemyError
 from jobspy import Country
 from db.db_model import JobPost, JobQueries, db
@@ -21,13 +22,13 @@ def get_country_by_code(country_code: str):
     raise ValueError(f"Invalid country code: '{country_code}'.")
 
 
-def insert_jobs_into_db(jobs):
+def insert_jobs_into_db(jobs, jobquery_id):
     """
     Inserts a list of job objects into the jobposts table.
     """
     try:
         rowcount = 0
-        for job in jobs:
+        for _, job in jobs.iterrows():
             if isinstance(job, str):
                 print(f"{job} is of type str, shouldn't happen")
                 continue
@@ -38,38 +39,35 @@ def insert_jobs_into_db(jobs):
                 print(f"Job with site_id '{job.id}' already exists. Skipping...")
                 continue
 
-            country = job.location.country
-            if isinstance(job.location.country, Country):
-                country = job.location.country.name
-
-            jobType = (
-                " - ".join(str(jt.name) for jt in job.job_type)
-                if job.job_type
-                else None
-            )
+            locations = job.location.split(", ")
+            town = locations[0]
+            country = locations[-1]
+            jobType = job.job_type
 
             new_job = JobPost(
-                id=job.id,
-                title=job.title,
-                company=job.company_name if job.company_name else " ",
-                company_url=job.company_url if job.company_url else " ",
+                site_id=job.id,
+                jobquery_id=jobquery_id,
+                title=safe_value(job.title),
+                company=safe_value(job.company),
+                company_url=safe_value(job.company_url),
                 job_url=job.job_url,
                 site=identify_platform(job.id),
-                location_country=country,
-                location_city=job.location.city,
-                location_state=job.location.state,
-                description=job.description,
-                job_type=jobType,
-                date_posted=job.date_posted,
-                emails=", ".join(job.emails) if job.emails else None,
-                is_remote=job.is_remote,
-                job_level=job.job_level,
-                company_industry=job.company_industry,
-                company_addresses=job.company_addresses,
-                company_employees_label=job.company_num_employees,
-                company_revenue_label=job.company_revenue,
-                company_description=job.company_description,
-                company_logo=job.company_logo,
+                location_country=safe_value(country),
+                location_city=safe_value(town),
+                location_state="",
+                description=safe_value(job.description),
+                job_type=safe_value(jobType),
+                date_posted=safe_value(job.date_posted),
+                emails=safe_value(job.emails),
+                is_remote=safe_value(job.is_remote),
+                job_level=safe_value(job.job_level),
+                company_industry=safe_value(job.company_industry),
+                company_addresses=safe_value(job.company_addresses),
+                company_employees_label=safe_value(job.company_num_employees),
+                company_revenue_label=safe_value(job.company_revenue),
+                company_description=safe_value(job.company_description),
+                company_logo=safe_value(job.company_logo),
+                status="new",
             )
 
             db.session.add(new_job)
@@ -82,6 +80,11 @@ def insert_jobs_into_db(jobs):
         print(f"Error while inserting data: {e}")
     finally:
         db.session.remove()
+
+
+def safe_value(value, default=None):
+    """Returns None if value is NaN, otherwise returns the value itself."""
+    return default if pd.isna(value) else value
 
 
 def get_jobquery_by_id(jobquery_id):

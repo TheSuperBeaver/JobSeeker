@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'
 import { MatTimepickerModule } from '@angular/material/timepicker';
+import { JobQueriesService } from '../../services/job.queries.service';
 
 @Component({
   selector: 'app-query-dialog',
@@ -27,6 +28,7 @@ export class QueryDialogComponent {
 
   constructor(
     private fb: FormBuilder,
+    private jobQueriesService: JobQueriesService,
     public dialogRef: MatDialogRef<QueryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -42,7 +44,7 @@ export class QueryDialogComponent {
       query_indeed: [data.query?.query_indeed || false],
       query_linkedin: [data.query?.query_linkedin || false],
       results: [data.query?.results || 25],
-      hour_automatic_query: [data.query?.hour_automatic_query || '07:00'],
+      hour_automatic_query: [data.query?.hour_automatic_query || 7],
       filters: [data.query?.filters || ''],
       status: [data.query?.status || 'automatic'],
     });
@@ -50,8 +52,35 @@ export class QueryDialogComponent {
 
   onSubmit() {
     const queryData = this.queryForm.value;
-    this.dialogRef.close(queryData);
+    const formData = { ...this.queryForm.value };
+
+    // Ensure hour_automatic_query is stored as a number (not Date)
+    if (formData.hour_automatic_query instanceof Date) {
+      formData.hour_automatic_query = formData.hour_automatic_query.getHours();
+    }
+
+    if (this.isEdit) {
+      this.jobQueriesService.modifyQuery(this.data.query.id, formData).subscribe({
+        next: (updatedQuery) => this.dialogRef.close(updatedQuery), // Return updated query
+        error: (err) => console.error('Error modifying query:', err),
+      });
+    } else {
+      this.jobQueriesService.addQuery(formData).subscribe({
+        next: (newQuery) => this.dialogRef.close(newQuery), // Return new query
+        error: (err) => console.error('Error adding query:', err),
+      });
+    }
   }
+
+  onTimeSelected(event: any) {
+    if (event instanceof Date) {
+      const selectedHour = event.getHours();
+      this.queryForm.patchValue({ hour_automatic_query: selectedHour });
+    } else {
+      console.error('Unexpected event format:', event);
+    }
+  }
+
 
   onCancel() {
     this.dialogRef.close();

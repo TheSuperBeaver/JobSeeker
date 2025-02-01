@@ -8,6 +8,7 @@ from routes.job_routes import job_routes
 from routes.query_routes import query_routes
 from routes.users_routes import users_routes
 from routes.user_routes import user_routes
+from routes.scrape_routes import scrape_routes
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -19,12 +20,13 @@ CORS(
     resources={r"/*": {"origins": "*"}},
     supports_credentials=True,
     allow_headers=["Content-Type", "Authorization", "X-User-Email"],
-    methods=["GET", "POST", "OPTIONS"],
+    methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
 )
 app.register_blueprint(job_routes, url_prefix="/jobs")
 app.register_blueprint(query_routes, url_prefix="/queries")
 app.register_blueprint(users_routes, url_prefix="/users")
 app.register_blueprint(user_routes, url_prefix="/user")
+app.register_blueprint(scrape_routes, url_prefix="/scrape")
 app.json.default = json_encoder
 
 if __name__ == "__main__":

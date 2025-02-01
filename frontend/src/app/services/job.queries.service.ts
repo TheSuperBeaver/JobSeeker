@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { JobQueries, JobQuery } from '../models/jobs.queries';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ScrapeResponse } from '../models/scrape.response';
 
 export interface AllJobStatus {
   statuses: string[]; // List of job statuses (e.g., ["Open", "In Progress", "Closed"])
@@ -19,6 +20,9 @@ export interface AllJobStatus {
 export class JobQueriesService {
   public jobQueries: JobQueries | null = null;
   public allJobStatus!: AllJobStatus;
+  public google_jobs_scraped: number = 0;
+  public indeed_jobs_scraped: number = 0;
+  public linkedin_jobs_scraped: number = 0;
 
   constructor(
     private httpClient: HttpClient
@@ -60,12 +64,21 @@ export class JobQueriesService {
     });
   }
 
-  addQuery(query: any): Observable<any> {
-    return this.httpClient.post(`${environment.apiUrl}queries/`, query);
+  addQuery(query: JobQuery): Observable<JobQuery> {
+    return this.httpClient.post<JobQuery>(`${environment.apiUrl}queries/`, query);
   }
 
-  modifyQuery(id: number, query: any): Observable<any> {
-    return this.httpClient.put(`${environment.apiUrl}queries/`, query);
+  modifyQuery(id: number, query: JobQuery): Observable<JobQuery> {
+    return this.httpClient.put<JobQuery>(`${environment.apiUrl}queries/${id}`, query);
   }
+
+  deleteQuery(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${environment.apiUrl}/queries/${id}`);
+  }
+
+  runQuery(id: number): Observable<ScrapeResponse> {
+    return this.httpClient.post<ScrapeResponse>(`${environment.apiUrl}/scrape/${id}`, id);
+  }
+
 
 }

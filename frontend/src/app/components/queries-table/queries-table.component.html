@@ -6,12 +6,14 @@
   <table mat-table [dataSource]="jobQueries" class="mat-table">
     <ng-container matColumnDef="searchTerm">
       <th mat-header-cell *matHeaderCellDef>Search term</th>
-      <td mat-cell *matCellDef="let query">{{ query.search_term }}</td>
+      <td mat-cell *matCellDef="let query" (click)="modifyQuery(query)">
+        {{ query.search_term }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="town">
       <th mat-header-cell *matHeaderCellDef>Town</th>
-      <td mat-cell *matCellDef="let query">
+      <td mat-cell *matCellDef="let query" (click)="modifyQuery(query)">
         <div class="town-container">
           <span class="town-name">{{ query.town }}</span>
           <img
@@ -30,7 +32,12 @@
 
     <ng-container matColumnDef="queries">
       <th mat-header-cell *matHeaderCellDef>Queries</th>
-      <td mat-cell *matCellDef="let query" class="queries-icons">
+      <td
+        mat-cell
+        *matCellDef="let query"
+        class="queries-icons"
+        (click)="modifyQuery(query)"
+      >
         <i
           *ngIf="query.query_google"
           class="fa-brands fa-google queries-icons"
@@ -51,29 +58,37 @@
 
     <ng-container matColumnDef="results">
       <th mat-header-cell *matHeaderCellDef>Results wanted</th>
-      <td mat-cell *matCellDef="let query">{{ query.results }}</td>
+      <td mat-cell *matCellDef="let query" (click)="modifyQuery(query)">
+        {{ query.results }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="automatic_hour">
       <th mat-header-cell *matHeaderCellDef>Hour batch retrieval</th>
-      <td mat-cell *matCellDef="let query">
+      <td mat-cell *matCellDef="let query" (click)="modifyQuery(query)">
         {{ query.hour_automatic_query }}:00
       </td>
     </ng-container>
 
     <ng-container matColumnDef="filters">
       <th mat-header-cell *matHeaderCellDef>Filters</th>
-      <td mat-cell *matCellDef="let query">{{ query.filters }}</td>
+      <td mat-cell *matCellDef="let query" (click)="modifyQuery(query)">
+        {{ query.filters }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let query">{{ query.status }}</td>
+      <td mat-cell *matCellDef="let query" (click)="modifyQuery(query)">
+        {{ query.status }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="nb_jobs">
       <th mat-header-cell *matHeaderCellDef>Number of jobs</th>
-      <td mat-cell *matCellDef="let query">{{ query.nb_jobs }}</td>
+      <td mat-cell *matCellDef="let query" (click)="modifyQuery(query)">
+        {{ query.nb_jobs }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
@@ -85,10 +100,17 @@
         >
           <i class="fa-solid fa-pen"></i> Modify
         </button>
-        <button class="action-button delete-button" (click)="deleteQuery()">
+        <button
+          class="action-button delete-button"
+          (click)="deleteQuery(query)"
+        >
           <i class="fa-solid fa-trash"></i> Delete
         </button>
-        <button class="action-button run-button" (click)="runQuery()">
+        <button
+          *ngIf="query.status != 'deactivated'"
+          class="action-button run-button"
+          (click)="runQuery(query)"
+        >
           <i class="fa-solid fa-play"></i> Run
         </button>
       </td>
@@ -103,7 +125,6 @@
       mat-row
       *matRowDef="let row; columns: displayedColumns"
       class="mat-row"
-      (click)="modifyQuery(row)"
     ></tr>
   </table>
 </div>

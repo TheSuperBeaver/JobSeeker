@@ -213,3 +213,9 @@
 .preferred-button:hover {
   background-color: #ffeb91;
 }
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end; 
+  gap: 8px; 
+}
