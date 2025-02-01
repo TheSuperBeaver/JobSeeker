@@ -119,7 +119,7 @@ def update_job_status(id):
         if not job:
             return jsonify({"error": "Job not found."}), 404
 
-        user = Users.query.get(email)
+        user = Users.query.filter_by(email=email).first()
         if not user:
             user = Users(
                 email=email,

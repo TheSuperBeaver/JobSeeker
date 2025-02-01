@@ -109,9 +109,15 @@
         <button
           *ngIf="query.status != 'deactivated'"
           class="action-button run-button"
+          [disabled]="loadingQueries[query.id]"
           (click)="runQuery(query)"
         >
-          <i class="fa-solid fa-play"></i> Run
+          <i *ngIf="!loadingQueries[query.id]" class="fa-solid fa-play"></i>
+          <span *ngIf="!loadingQueries[query.id]"> Run </span>
+          <i
+            *ngIf="loadingQueries[query.id]"
+            class="fa-solid fa-spinner fa-spin"
+          ></i>
         </button>
       </td>
     </ng-container>

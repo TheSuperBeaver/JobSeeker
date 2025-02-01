@@ -19,6 +19,8 @@ export class QueriesTableComponent implements OnInit {
   private _snackBar = inject(MatSnackBar);
   jobQueries: JobQuery[] = [];
   displayedColumns: string[] = ['searchTerm', 'town', 'queries', 'results', 'automatic_hour', 'filters', 'status', 'nb_jobs', 'actions'];
+  loadingQueries: { [key: string]: boolean } = {};
+
   constructor(private dialog: MatDialog, private jobQueriesService: JobQueriesService) { }
 
   ngOnInit(): void {
@@ -92,6 +94,7 @@ export class QueriesTableComponent implements OnInit {
   }
 
   runQuery(query: JobQuery): void {
+    this.loadingQueries[query.id] = true;
     this.jobQueriesService.runQuery(query.id).subscribe({
       next: (scrapeResponse) => {
         let message = "";
@@ -101,6 +104,10 @@ export class QueriesTableComponent implements OnInit {
         this._snackBar.open(message, "Close")
       },
       error: (err) => console.error('Error running query:', err),
+      complete: () => {
+        this.loadingQueries[query.id] = false;
+        this.fetchQueries();
+      }
     });
   }
 }
