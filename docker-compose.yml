@@ -11,8 +11,9 @@ services:
       - MYSQL_DATABASE=jobspy
       - MYSQL_USER=jobspy
       - MYSQL_PASSWORD=jobspy
+      - PORT=6081
     ports:
-      - "5000:5000"
+      - "6081:6081"
     volumes:
       - ./backend:/app
     restart: unless-stopped
@@ -43,13 +44,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.frontend
     ports:
-      - "4200:4200"
-    environment:
-      - MYSQL_HOST=mysql-db
-      - MYSQL_PORT=3306
-      - MYSQL_DATABASE=jobspy
-      - MYSQL_USER=jobspy
-      - MYSQL_PASSWORD=jobspy
+      - "6080:80"
     restart: unless-stopped
     networks:
       - mainNetwork
