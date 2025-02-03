@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from db.auth_utils import validate_token, get_capyx_token
-from db.db_model import JobUserStatus, Users, db, JobPost
+from db.db_model import JobStatus, JobUserStatus, Users, db, JobPost
 import traceback
 
 job_routes = Blueprint("job_routes", __name__)
@@ -136,15 +136,23 @@ def update_job_status(id):
             db.session.add(user)
             db.session.commit()
 
+        # Convert string to enum
+        try:
+            new_status = JobStatus(status)
+        except ValueError:
+            return jsonify({"error": f"Invalid status: {status}"}), 400
+
         existingStatus = JobUserStatus.query.filter_by(
             job_id=id, user_id=user.id
         ).first()
         if not existingStatus:
-            existingStatus = JobUserStatus(job_id=id, user_id=user.id, status=status)
+            existingStatus = JobUserStatus(
+                job_id=id, user_id=user.id, status=new_status
+            )
             db.session.add(status)
             db.session.commit()
         else:
-            existingStatus.status = status
+            existingStatus.status = new_status
             db.session.commit()
 
         return jsonify({"id": existingStatus.id, "status": existingStatus.status})

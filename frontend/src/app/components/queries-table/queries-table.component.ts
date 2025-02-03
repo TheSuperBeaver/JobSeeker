@@ -46,14 +46,7 @@ export class QueriesTableComponent implements OnInit {
       data: { query: null },
     });
 
-    dialogRef.afterClosed().subscribe((newQuery) => {
-      if (newQuery) {
-        this.jobQueriesService.addQuery(newQuery).subscribe(() => {
-          console.log('Query added successfully');
-          this.fetchQueries();
-        });
-      }
-    });
+    
   }
 
   modifyQuery(query: JobQuery) {
