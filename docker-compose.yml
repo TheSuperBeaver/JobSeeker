@@ -48,7 +48,7 @@ services:
       - "6080:80"
     restart: unless-stopped
     depends_on:
-      - jobseeker-backend
+      - backend
     networks:
       - mainNetwork
 networks:
