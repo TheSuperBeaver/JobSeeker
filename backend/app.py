@@ -31,5 +31,5 @@ app.register_blueprint(scrape_routes, url_prefix="/scrape")
 app.json.default = json_encoder
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 5000))
+    port = int(os.getenv("PORT", 6081))
     app.run(host="0.0.0.0", port=port)

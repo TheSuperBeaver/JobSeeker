@@ -28,9 +28,6 @@ def get_jobs():
 
     where_condition = []
 
-    if status_list:
-        where_condition.append(JobPost.status.in_(status_list))
-
     if query_id:
         where_condition.append(JobPost.jobquery_id == query_id)
 
@@ -56,6 +53,16 @@ def get_jobs():
         query = db.session.query(JobPost, subquery.c.status).outerjoin(
             subquery, JobPost.id == subquery.c.job_id
         )
+
+        if status_list:
+            if "new" in status_list:
+                where_condition.append(
+                    db.or_(
+                        subquery.c.status.in_(status_list), subquery.c.status.is_(None)
+                    )
+                )
+            else:
+                where_condition.append(subquery.c.status.in_(status_list))
 
         order = (
             [subquery.c.status.desc()]
@@ -129,11 +136,18 @@ def update_job_status(id):
             db.session.add(user)
             db.session.commit()
 
-        status = JobUserStatus(job_id=id, user_id=user.id, status=status)
-        db.session.add(status)
-        db.session.commit()
+        existingStatus = JobUserStatus.query.filter_by(
+            job_id=id, user_id=user.id
+        ).first()
+        if not existingStatus:
+            existingStatus = JobUserStatus(job_id=id, user_id=user.id, status=status)
+            db.session.add(status)
+            db.session.commit()
+        else:
+            existingStatus.status = status
+            db.session.commit()
 
-        return jsonify({"id": status.id, "status": status.status})
+        return jsonify({"id": existingStatus.id, "status": existingStatus.status})
     except Exception:
         traceback.print_exc()
         return jsonify({"error": "Error updating job status."}), 500
