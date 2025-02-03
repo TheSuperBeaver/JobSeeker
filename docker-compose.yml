@@ -1,3 +1,4 @@
+name: jobseeker
 services:
   backend:
     container_name: jobseeker-backend
@@ -46,6 +47,8 @@ services:
     ports:
       - "6080:80"
     restart: unless-stopped
+    depends_on:
+      - jobseeker-backend
     networks:
       - mainNetwork
 networks:
