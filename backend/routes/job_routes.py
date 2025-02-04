@@ -149,7 +149,7 @@ def update_job_status(id):
             existingStatus = JobUserStatus(
                 job_id=id, user_id=user.id, status=new_status
             )
-            db.session.add(status)
+            db.session.add(existingStatus)
             db.session.commit()
         else:
             existingStatus.status = new_status
