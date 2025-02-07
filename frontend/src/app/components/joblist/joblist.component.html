@@ -1,4 +1,7 @@
-<job-filter (jobStatusChange)="updateJobStatus($event)"></job-filter>
+<job-filter
+  (jobStatusChange)="updateJobStatus($event)"
+  (userChange)="updateQueryId($event)"
+></job-filter>
 <div
   id="job-container"
   class="row mt-3 mx-4"

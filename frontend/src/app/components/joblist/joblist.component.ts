@@ -38,6 +38,9 @@ export class JoblistComponent {
     if (changes['jobStatus']) {
       this.loadJobs();
     }
+    if (changes['queryId']) {
+      this.loadJobs();
+    }
   }
 
   async loadJobs(): Promise<void> {
@@ -58,6 +61,11 @@ export class JoblistComponent {
 
   updateJobStatus(selectedStatuses: string[]): void {
     this.jobStatus = selectedStatuses;
+    this.loadJobs();
+  }
+
+  updateQueryId(queryId: number): void {
+    this.queryId = queryId;
     this.loadJobs();
   }
 }
