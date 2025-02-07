@@ -10,6 +10,12 @@ from db.db_utils import (
 from db.db_model import db
 from config import Config
 import time
+import logging
+
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -19,7 +25,7 @@ db.init_app(app)
 
 def check_job_queries():
     with app.app_context():
-        print("Checking for scheduled job queries...")
+        logger.info("Checking for scheduled job queries...")
         try:
             jobs = get_all_automatic_jobqueries()
 
@@ -59,9 +65,9 @@ def check_job_queries():
                     )
                     insert_jobs_into_db(job_results)
 
-            print("Job check completed.")
+            logger.info("Job check completed.")
         except Exception as e:
-            print(f"Error checking job queries: {e}")
+            logger.error(f"Error checking job queries: {e}")
 
 
 if __name__ == "__main__":
@@ -70,9 +76,9 @@ if __name__ == "__main__":
 
     try:
         scheduler.start()
-        print("Scheduler started. Waiting for tasks...")
+        logger.info("Scheduler started. Waiting for tasks...")
         while True:
             time.sleep(60)
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
-        print("Scheduler stopped.")
+        logger.info("Scheduler stopped.")
