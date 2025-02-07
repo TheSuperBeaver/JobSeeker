@@ -16,6 +16,7 @@ export class JoblistComponent {
 
   @Input() jobStatus: string[] = ['New', 'Viewed', 'Starred'];
   @Input() queryId: number | undefined;
+  @Input() userId: number | undefined;
   jobPosts: JobPost[] = [];
   selectedJob: JobPost | null = null;
   loaded: boolean = false;
@@ -41,13 +42,16 @@ export class JoblistComponent {
     if (changes['queryId']) {
       this.loadJobs();
     }
+    if (changes['userId']) {
+      this.loadJobs();
+    }
   }
 
   async loadJobs(): Promise<void> {
     this.loaded = false;
     this.jobPosts = [];
     try {
-      await this.jobsService.loadJobs(this.jobStatus, this.queryId);
+      await this.jobsService.loadJobs(this.jobStatus, this.queryId, this.userId);
       this.jobPosts = this.jobsService.jobs;
       this.newJobsCount = this.jobsService.newJobsCount;
       this.viewedJobsCount = this.jobsService.viewedJobsCount;
@@ -64,8 +68,8 @@ export class JoblistComponent {
     this.loadJobs();
   }
 
-  updateQueryId(queryId: number): void {
-    this.queryId = queryId;
+  updateUserId(userId: number): void {
+    this.userId = userId;
     this.loadJobs();
   }
 }
